@@ -26,8 +26,8 @@ const SigninPage = () => {
     if (auth.status === 'loading') {
       document.querySelector('#signin-button').disabled = true;
     } else if (auth.status === 'failed') {
-      setMessage('Could not create account with user details');
-      setTimeout(setMessage, 5000);
+      setMessage('Could not signin with user details');
+      setTimeout(setMessage, 3000);
       document.querySelector('#signin-button').disabled = false;
     } else if (auth.status === 'succeeded') {
       navigate('/');

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Field from '../../components/Field';
+import {
+  Formik, Form, Field, ErrorMessage,
+} from 'formik';
+import * as Yup from 'yup';
 import { signUp } from './authSlice';
 
 const fields = [
@@ -24,28 +27,43 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
   const [message, setMessage] = useState('');
-  const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    if (auth.status === 'failed') {
+    if (auth.status === 'loading') {
+      document.querySelector('#signin-button').disabled = true;
+    } else if (auth.status === 'failed') {
       setMessage('Could not create account with user details');
-    } else if (auth.status === 'fulfilled') {
+      setTimeout(setMessage, 3000);
+      document.querySelector('#signin-button').disabled = false;
+    } else if (auth.status === 'succeeded') {
       navigate('/');
     }
   }, [auth]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const renderError = (message) => <span className="text-red-600">{message}</span>;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (values) => {
     const user = {
       user: {
-        ...formData,
+        ...values,
       },
     };
     dispatch(signUp(user));
+  };
+
+  const validationSchema = Yup.object({
+    username: Yup.string().required('Please enter your username'),
+    email: Yup.string().email('Email is invalid').required('Please enter your email address'),
+    password: Yup.string().min(6, 'Password must be least 6 characters long').required('Please enter your password'),
+    password_confirmation: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+  });
+
+  const initialValues = {
+    username: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
   };
 
   return (
@@ -55,30 +73,34 @@ const SignupPage = () => {
           <h2 className="text-2xl text-center text-blue-500">Create an account</h2>
         </div>
         <div className="w-full">
-          <form
-            onSubmit={(e) => handleSubmit(e)}
-            className="input-form"
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={(values, { resetForm }) => {
+              handleSubmit(values);
+              resetForm();
+            }}
           >
-            {
-              fields.map((field) => (
-                <Field
-                  key={field.index}
-                  name={field.name}
-                  elementName={field.elementName}
-                  type={field.type}
-                  placeholder={field.placeholder}
-                  value={formData[field.name]}
-                  id={field.name}
-                  onChange={handleChange}
-                  errorMessage={`Please enter your ${field.name}]`}
-                />
-              ))
-            }
-            <span className="text-red-600">{message}</span>
-            <div className="flex justify-center">
-              <button type="submit" className="btn-primary">Signup</button>
-            </div>
-          </form>
+            <Form className="input-form">
+              {
+                fields.map((field) => (
+                  <div key={field.index} className="my-2">
+                    <Field
+                      className="input-field focus:shadow-outline"
+                      name={field.name}
+                      type={field.type}
+                      placeholder={field.placeholder}
+                    />
+                    <ErrorMessage name={field.name} render={renderError} />
+                  </div>
+                ))
+              }
+              <span className="text-red-600">{message}</span>
+              <div className="flex justify-center">
+                <button id="signin-button" type="submit" className="btn-primary disabled:btn-primary-light">Signup</button>
+              </div>
+            </Form>
+          </Formik>
         </div>
       </div>
     </div>
