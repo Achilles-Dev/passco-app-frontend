@@ -35,12 +35,18 @@ const authSlice = createSlice({
         state.status = 'succeeded';
         authAdapter.addOne;
       })
+      .addCase(signUp.rejected, (state) => {
+        state.status = 'failed';
+      })
       .addCase(signIn.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(signIn.fulfilled, (state) => {
         state.status = 'succeeded';
         authAdapter.addOne;
+      })
+      .addCase(signIn.rejected, (state) => {
+        state.status = 'failed';
       });
   },
 });
