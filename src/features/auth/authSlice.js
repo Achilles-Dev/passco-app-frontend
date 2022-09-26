@@ -1,13 +1,15 @@
-import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-const baseUrl = 'https://passco-app-backend.herokuapp.com/api'
+// const baseUrl = 'https://passco-app-backend.herokuapp.com/api';
+const baseUrl = 'http://localhost:3000/api';
 
-export const signUp = createAsyncThunk("users/signup", async (user) => {
+export const signUp = createAsyncThunk('users/signup', async (user) => {
   const res = await axios.post(`${baseUrl}/users`, user);
   return res.data;
 });
 
-export const signIn = createAsyncThunk("users/signin", async (user) => {
+export const signIn = createAsyncThunk('users/signin', async (user) => {
   const res = await axios.post(`${baseUrl}/users/sign_in`, user);
   return res.data;
 });
@@ -15,8 +17,10 @@ export const signIn = createAsyncThunk("users/signin", async (user) => {
 const authAdapter = createEntityAdapter();
 
 const initialState = authAdapter.getInitialState({
-  status: 'idle'
+  status: 'idle',
 });
+
+/* eslint no-param-reassign: ["error", { "props": false }] */
 
 const authSlice = createSlice({
   name: 'auth',
@@ -24,21 +28,21 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-    .addCase(signUp.pending, (state, action) => {
-      state.status = "loading";
-    })
-    .addCase(signUp.fulfilled, (state, action) => {
-      state.status = "succeeded";
-      authAdapter.addOne
-    })
-    .addCase(signIn.pending, (state, action) => {
-      state.status = "loading";
-    })
-    .addCase(signIn.fulfilled, (state, action) => {
-      state.status = "succeeded";
-      authAdapter.addOne
-    })
-  }
+      .addCase(signUp.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(signUp.fulfilled, (state) => {
+        state.status = 'succeeded';
+        authAdapter.addOne;
+      })
+      .addCase(signIn.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(signIn.fulfilled, (state) => {
+        state.status = 'succeeded';
+        authAdapter.addOne;
+      });
+  },
 });
 
 export default authSlice.reducer;
