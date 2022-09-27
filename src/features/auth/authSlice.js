@@ -14,7 +14,9 @@ export const signIn = createAsyncThunk('users/signin', async (user) => {
   return res.data;
 });
 
-const authAdapter = createEntityAdapter();
+const authAdapter = createEntityAdapter({
+  selectId: (auth) => auth.user.id,
+});
 
 const initialState = authAdapter.getInitialState({
   status: 'idle',
@@ -26,9 +28,9 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout: (state) => {
+    signOut: (state, action) => {
       state.status = 'idle';
-      state.auth = {};
+      authAdapter.removeOne(state, action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -36,9 +38,9 @@ const authSlice = createSlice({
       .addCase(signUp.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(signUp.fulfilled, (state) => {
+      .addCase(signUp.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        authAdapter.addOne;
+        authAdapter.addOne(state, action.payload);
       })
       .addCase(signUp.rejected, (state) => {
         state.status = 'failed';
@@ -46,9 +48,9 @@ const authSlice = createSlice({
       .addCase(signIn.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(signIn.fulfilled, (state) => {
+      .addCase(signIn.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        authAdapter.addOne;
+        authAdapter.addOne(state, action.payload);
       })
       .addCase(signIn.rejected, (state) => {
         state.status = 'failed';
@@ -57,7 +59,7 @@ const authSlice = createSlice({
 });
 
 export const {
-  logout,
+  signOut,
 } = authSlice.actions;
 
 export default authSlice.reducer;
