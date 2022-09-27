@@ -14,11 +14,6 @@ export const signIn = createAsyncThunk('users/signin', async (user) => {
   return res.data;
 });
 
-export const fetchUser = createAsyncThunk('users/fetchUser', async (userId, token) => {
-  const res = await axios.get(`${baseUrl}/v1/users/:id=${userId}`);
-  return (res.data, token);
-});
-
 const authAdapter = createEntityAdapter({
   selectId: (auth) => auth.user.id,
 });
@@ -58,17 +53,6 @@ const authSlice = createSlice({
         authAdapter.addOne(state, action.payload);
       })
       .addCase(signIn.rejected, (state) => {
-        state.status = 'failed';
-      })
-      .addCase(fetchUser.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchUser.fulfilled, (state, action) => {
-        console.log(action.payload);
-        state.status = 'succeeded';
-        authAdapter.addOne(state, action.payload);
-      })
-      .addCase(fetchUser.rejected, (state) => {
         state.status = 'failed';
       });
   },
