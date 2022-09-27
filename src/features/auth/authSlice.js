@@ -25,7 +25,12 @@ const initialState = authAdapter.getInitialState({
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.status = 'idle';
+      state.auth = {};
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signUp.pending, (state) => {
@@ -50,5 +55,9 @@ const authSlice = createSlice({
       });
   },
 });
+
+export const {
+  logout,
+} = authSlice.actions;
 
 export default authSlice.reducer;

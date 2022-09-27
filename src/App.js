@@ -1,10 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
+import Header from './components/Header';
 import SigninPage from './features/auth/SigninPage';
 import SignupPage from './features/auth/SignupPage';
 
 function App() {
   return (
-    <div className="App">
+    <div className="flex flex-col h-screen">
+      <Header />
       <Routes>
         <Route
           exact="true"
