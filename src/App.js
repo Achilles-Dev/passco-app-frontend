@@ -1,15 +1,12 @@
-import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import SigninPage from './features/auth/SigninPage';
 import SignupPage from './features/auth/SignupPage';
 
 function App() {
-  const auth = useSelector((state) => state.auth);
-  const id = auth.ids[0];
   return (
     <div className="flex flex-col h-screen">
-      <Header id={id} auth={auth} />
+      <Header />
       <Routes>
         <Route
           exact="true"
