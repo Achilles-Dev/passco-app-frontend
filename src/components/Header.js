@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import userIcon from '../assets/images/user_icon.png';
@@ -17,14 +17,14 @@ const Header = () => {
       setVisibility('hidden');
     }
   };
-
-  // const toggleProfileOnBlur = () => {
-  //   if (visibility === '') {
-  //     setVisibility('hidden');
-  //   } else {
-  //     setVisibility('hidden');
-  //   }
-  // };
+  useEffect(() => {
+    const test = document.querySelector('#test');
+    document.addEventListener('mousedown', (e) => {
+      if (test && !test.contains(e.target) && visibility === '') {
+        setVisibility('hidden');
+      }
+    });
+  }, [visibility]);
 
   const handleSubmit = () => {
     dispatch(signOut(id));
@@ -41,7 +41,7 @@ const Header = () => {
         <div className="">
           {auth.entities[id] && auth.entities[id].token ? (
             <ul className="navbar-nav flex flex-row justify-end pl-0 list-style-none mr-auto">
-              <div className="relative inline-block text-left">
+              <div className="relative inline-block text-left" id="test">
                 <li className="nav-item">
                   <button
                     className="nav-link bg-blue-400 hover:text-blue-700 focus:text-blue-700 p-0"
