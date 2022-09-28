@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import userIcon from '../assets/images/user_icon.png';
+import userIcon from '../assets/images/user_icon.svg';
 import { signOut } from '../features/auth/authSlice';
 
 const Header = () => {
   const auth = useSelector((state) => state.auth);
-  // const { status } = auth;
   const id = auth.ids[0];
   const dispatch = useDispatch();
   const [visibility, setVisibility] = useState('hidden');
@@ -34,7 +33,7 @@ const Header = () => {
     <nav className="rounded-md shadow-md py-2 bg-white w-full">
       <div className="px-6 w-full flex flex-wrap items-center justify-between">
         <div>
-          <Link className="text-blue-500" to="/">
+          <Link className="text-blue-500 text-xl" to="/">
             WASSCE PASSCO
           </Link>
         </div>
@@ -44,7 +43,7 @@ const Header = () => {
               <div className="relative inline-block text-left" id="test">
                 <li className="nav-item">
                   <button
-                    className="nav-link bg-blue-400 hover:text-blue-700 focus:text-blue-700 p-0"
+                    className="hover:bg-blue-100 focus:bg-blue-100 p-1 border border-blue-400 rounded-full"
                     type="button"
                     id="menu-button"
                     aria-expanded="true"
@@ -52,7 +51,7 @@ const Header = () => {
                     onClick={toggleProfile}
                   >
                     <img
-                      className="w-10 h1-10"
+                      className="w-8 h1-10"
                       src={userIcon}
                       alt="Profile"
                     />
@@ -69,7 +68,7 @@ const Header = () => {
                   <div className="py-1" role="none" onClick={toggleProfile}>
                     <Link
                       to="/"
-                      className="text-gray-700 block px-4 py-2"
+                      className="text-gray-700 block px-4 py-2 hover:text-blue-400 focus:text-blue-400"
                       role="menuitem"
                       tabIndex="-1"
                       id="menu-item-1"
@@ -78,7 +77,7 @@ const Header = () => {
                     </Link>
                     <Link
                       to="/profile"
-                      className="text-gray-700 block px-4 py-2"
+                      className="text-gray-700 block px-4 py-2 hover:text-blue-400 focus:text-blue-400"
                       role="menuitem"
                       tabIndex="-1"
                       id="menu-item-2"
@@ -87,7 +86,7 @@ const Header = () => {
                     </Link>
                     <button
                       type="button"
-                      className="text-gray-700 block w-full px-4 py-2 text-left"
+                      className="text-gray-700 block px-4 py-2 hover:text-blue-400 focus:text-blue-400"
                       role="menuitem"
                       tabIndex="-1"
                       id="menu-item-3"
@@ -103,7 +102,7 @@ const Header = () => {
             <ul className="navbar-nav flex flex-row pl-0 list-style-none mr-auto">
               <li className="nav-item p-2">
                 <Link
-                  className="nav-link text-blue-500 hover:text-blue-700 focus:text-blue-700 p-0"
+                  className="nav-link"
                   to="/signin"
                 >
                   Signin
@@ -111,7 +110,7 @@ const Header = () => {
               </li>
               <li className="nav-item p-2">
                 <Link
-                  className="nav-link text-blue-500 hover:text-blue-700 focus:text-blue-700 p-0"
+                  className="nav-link text-blue-500 hover:text-blue-700 focus:text-blue-700 p-2 focus:border focus:rounded focus:border-blue-400"
                   to="/signup"
                 >
                   Signup
