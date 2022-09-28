@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import userIcon from '../assets/images/user_icon.svg';
 import { signOut } from '../features/auth/authSlice';
+import { fetchUsers } from '../features/users/usersSlice';
 
 const Header = ({ auth }) => {
   const id = auth.ids[0];
@@ -16,6 +17,12 @@ const Header = ({ auth }) => {
       setVisibility('hidden');
     }
   };
+
+  useEffect(() => {
+    if (auth.entities[id]) {
+      dispatch(fetchUsers(auth.entities[id].token));
+    }
+  }, [auth]);
 
   useEffect(() => {
     const test = document.querySelector('#test');
