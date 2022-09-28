@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -22,7 +22,14 @@ const SigninPage = () => {
   const auth = useSelector((state) => state.auth);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
+  const handleSubmit = (values) => {
+    const user = {
+      user: {
+        ...values,
+      },
+    };
+    dispatch(signIn(user));
+
     if (auth.status === 'loading') {
       document.querySelector('#signin-button').disabled = true;
     } else if (auth.status === 'failed') {
@@ -32,15 +39,6 @@ const SigninPage = () => {
     } else if (auth.status === 'succeeded') {
       navigate('/');
     }
-  }, [auth]);
-
-  const handleSubmit = (values) => {
-    const user = {
-      user: {
-        ...values,
-      },
-    };
-    dispatch(signIn(user));
   };
 
   const renderError = (message) => <span className="text-red-600">{message}</span>;

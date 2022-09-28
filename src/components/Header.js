@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import userIcon from '../assets/images/user_icon.svg';
 import { signOut } from '../features/auth/authSlice';
 
-const Header = () => {
-  const auth = useSelector((state) => state.auth);
+const Header = ({ auth }) => {
   const id = auth.ids[0];
   const dispatch = useDispatch();
   const [visibility, setVisibility] = useState('hidden');
@@ -16,6 +16,7 @@ const Header = () => {
       setVisibility('hidden');
     }
   };
+
   useEffect(() => {
     const test = document.querySelector('#test');
     document.addEventListener('mousedown', (e) => {
@@ -122,6 +123,10 @@ const Header = () => {
       </div>
     </nav>
   );
+};
+
+Header.propTypes = {
+  auth: PropTypes.func.isRequired,
 };
 
 export default Header;

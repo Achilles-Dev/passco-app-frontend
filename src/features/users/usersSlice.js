@@ -3,8 +3,13 @@ import axios from 'axios';
 
 const baseUrl = 'https://passco-app-backend.herokuapp.com/api';
 
-export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
-  const res = await axios.get(`${baseUrl}/v1/users`);
+export const fetchUsers = createAsyncThunk('users/fetchUsers', async (token) => {
+  const res = await axios.get(`${baseUrl}/v1/users`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   return res.data;
 });
 
@@ -28,6 +33,9 @@ const usersSlice = createSlice({
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.status = 'succeeded';
         usersAdapter.upsertMany(state, action.payload);
+      })
+      .addCase(fetchUsers.rejected, (state) => {
+        state.status = 'failed';
       });
   },
 });

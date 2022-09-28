@@ -1,8 +1,8 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// const baseUrl = 'https://passco-app-backend.herokuapp.com/api';
-const baseUrl = 'http://localhost:3000/api';
+const baseUrl = 'https://passco-app-backend.herokuapp.com/api';
+// const baseUrl = 'http://localhost:3000/api';
 
 export const signUp = createAsyncThunk('users/signup', async (user) => {
   const res = await axios.post(`${baseUrl}/users`, user);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -28,18 +28,6 @@ const SignupPage = () => {
   const auth = useSelector((state) => state.auth);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    if (auth.status === 'loading') {
-      document.querySelector('#signin-button').disabled = true;
-    } else if (auth.status === 'failed') {
-      setMessage('Could not create account with user details');
-      setTimeout(setMessage, 3000);
-      document.querySelector('#signin-button').disabled = false;
-    } else if (auth.status === 'succeeded') {
-      navigate('/');
-    }
-  }, [auth]);
-
   const renderError = (message) => <span className="text-red-600">{message}</span>;
 
   const handleSubmit = (values) => {
@@ -49,6 +37,16 @@ const SignupPage = () => {
       },
     };
     dispatch(signUp(user));
+
+    if (auth.status === 'loading') {
+      document.querySelector('#signin-button').disabled = true;
+    } else if (auth.status === 'failed') {
+      setMessage('Could not create account with user details');
+      setTimeout(setMessage, 3000);
+      document.querySelector('#signin-button').disabled = false;
+    } else if (auth.status === 'succeeded') {
+      navigate('/');
+    }
   };
 
   const validationSchema = Yup.object({
