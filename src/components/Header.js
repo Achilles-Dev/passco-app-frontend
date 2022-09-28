@@ -31,7 +31,7 @@ const Header = () => {
   };
 
   return (
-    <nav className="rounded-md shadow-md py-2 bg-white w-full mb-5">
+    <nav className="rounded-md shadow-md py-2 bg-white w-full">
       <div className="px-6 w-full flex flex-wrap items-center justify-between">
         <div>
           <Link className="text-blue-500" to="/">

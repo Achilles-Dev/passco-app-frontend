@@ -68,39 +68,41 @@ const SignupPage = () => {
 
   return (
     <div className="flex flex-col justify-center h-screen bg-gray-200 md:px-40 lg:px-56">
-      <div className="border py-3 mx-5 md:mx-10 rounded-lg bg-white shadow-md">
-        <div>
-          <h2 className="text-2xl text-center text-blue-500">Create an account</h2>
-        </div>
-        <div className="w-full">
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={(values, { resetForm }) => {
-              handleSubmit(values);
-              resetForm();
-            }}
-          >
-            <Form className="input-form">
-              {
-                fields.map((field) => (
-                  <div key={field.index} className="my-2">
-                    <Field
-                      className="input-field focus:shadow-outline"
-                      name={field.name}
-                      type={field.type}
-                      placeholder={field.placeholder}
-                    />
-                    <ErrorMessage name={field.name} render={renderError} />
-                  </div>
-                ))
-              }
-              <span className="text-red-600">{message}</span>
-              <div className="flex justify-center">
-                <button id="signin-button" type="submit" className="btn-primary disabled:btn-primary-light">Signup</button>
-              </div>
-            </Form>
-          </Formik>
+      <div className="lg:px-20">
+        <div className="flex flex-col justify-center border py-3 mx-5 md:mx-10 rounded-lg bg-white shadow-md">
+          <div>
+            <h2 className="text-3xl text-center text-blue-500">Create an account</h2>
+          </div>
+          <div className="w-full">
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={(values, { resetForm }) => {
+                handleSubmit(values);
+                resetForm();
+              }}
+            >
+              <Form className="input-form">
+                {
+                  fields.map((field) => (
+                    <div key={field.index} className="my-2">
+                      <Field
+                        className="input-field focus:shadow-outline"
+                        name={field.name}
+                        type={field.type}
+                        placeholder={field.placeholder}
+                      />
+                      <ErrorMessage name={field.name} render={renderError} />
+                    </div>
+                  ))
+                }
+                <span className="text-red-600">{message}</span>
+                <div className="flex justify-center">
+                  <button id="signin-button" type="submit" className="btn-primary disabled:btn-primary-light">Signup</button>
+                </div>
+              </Form>
+            </Formik>
+          </div>
         </div>
       </div>
     </div>
