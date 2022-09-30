@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const baseUrl = 'https://passco-app-backend.herokuapp.com/api';
 
-export const addQuestion = createAsyncThunk('users/addQuestion', async ({ token, question, subjectId }) => {
+export const addQuestion = createAsyncThunk('questions/addQuestion', async ({ token, question, subjectId }) => {
   const res = await axios.post(`${baseUrl}/v1/questions?subject_id=${subjectId}`, { question },
     {
       headers: {
@@ -13,7 +13,7 @@ export const addQuestion = createAsyncThunk('users/addQuestion', async ({ token,
   return res.data;
 });
 
-export const fetchQuestions = createAsyncThunk('users/fetchQuestions', async ({ token, year, subjectId }) => {
+export const fetchQuestions = createAsyncThunk('questions/fetchQuestions', async ({ token, year, subjectId }) => {
   const res = await axios.get(`${baseUrl}/v1/questions?year=${year}?subject_id=${subjectId}`,
     {
       headers: {
@@ -23,7 +23,7 @@ export const fetchQuestions = createAsyncThunk('users/fetchQuestions', async ({ 
   return res.data;
 });
 
-export const updateQuestion = createAsyncThunk('users/updateQuestion', async ({ token, question, questionId }) => {
+export const updateQuestion = createAsyncThunk('questions/updateQuestion', async ({ token, question, questionId }) => {
   const res = await axios.patch(`${baseUrl}/v1/questions/${questionId}`, { question },
     {
       headers: {
@@ -37,7 +37,7 @@ export const updateQuestion = createAsyncThunk('users/updateQuestion', async ({ 
   };
 });
 
-export const deleteQuestion = createAsyncThunk('users/deleteQuestion', async ({ token, questionId }) => {
+export const deleteQuestion = createAsyncThunk('questions/deleteQuestion', async ({ token, questionId }) => {
   const res = await axios.delete(`${baseUrl}/v1/questions/${questionId}`,
     {
       headers: {

@@ -8,6 +8,7 @@ import usersReducer from '../features/users/usersSlice';
 import authReducer from '../features/auth/authSlice';
 import questionsReducer from '../features/questions/questionsSlice';
 import subjectsReducer from '../features/subjects/subjectsSlice';
+import answersReducer from '../features/answers/answersSlice';
 
 const rootpersistConfig = {
   key: 'root',
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   users: persistReducer(usersPersistConfig, usersReducer),
   questions: questionsReducer,
   subjects: subjectsReducer,
+  answers: answersReducer,
 });
 
 const persistedReducer = persistReducer(rootpersistConfig, rootReducer);
