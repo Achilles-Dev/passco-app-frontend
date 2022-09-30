@@ -120,4 +120,13 @@ const questionsSlice = createSlice({
   },
 });
 
+export const {
+  resetQuestions,
+} = questionsSlice.actions;
+
 export default questionsSlice.reducer;
+
+export const {
+  selectAll: selectAllQuestions,
+  selectById: selectQuestionById,
+} = questionsAdapter.getSelectors((state) => state.questions);
