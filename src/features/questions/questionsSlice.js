@@ -14,7 +14,7 @@ export const addQuestion = createAsyncThunk('users/addQuestion', async ({ token,
 });
 
 export const fetchQuestions = createAsyncThunk('users/fetchQuestions', async ({ token, year, subjectId }) => {
-  const res = await axios.post(`${baseUrl}/v1/questions?year=${year}?subject_id=${subjectId}`,
+  const res = await axios.get(`${baseUrl}/v1/questions?year=${year}?subject_id=${subjectId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -24,7 +24,7 @@ export const fetchQuestions = createAsyncThunk('users/fetchQuestions', async ({ 
 });
 
 export const updateQuestion = createAsyncThunk('users/updateQuestion', async ({ token, question, questionId }) => {
-  const res = await axios.post(`${baseUrl}/v1/questions/${questionId}`, { question },
+  const res = await axios.patch(`${baseUrl}/v1/questions/${questionId}`, { question },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ export const updateQuestion = createAsyncThunk('users/updateQuestion', async ({ 
 });
 
 export const deleteQuestion = createAsyncThunk('users/deleteQuestion', async ({ token, questionId }) => {
-  const res = await axios.post(`${baseUrl}/v1/questions/${questionId}`,
+  const res = await axios.delete(`${baseUrl}/v1/questions/${questionId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -120,11 +120,11 @@ const questionsSlice = createSlice({
   },
 });
 
+export default questionsSlice.reducer;
+
 export const {
   resetQuestions,
 } = questionsSlice.actions;
-
-export default questionsSlice.reducer;
 
 export const {
   selectAll: selectAllQuestions,

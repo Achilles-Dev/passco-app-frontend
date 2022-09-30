@@ -7,6 +7,7 @@ import persistStore from 'redux-persist/es/persistStore';
 import usersReducer from '../features/users/usersSlice';
 import authReducer from '../features/auth/authSlice';
 import questionsReducer from '../features/questions/questionsSlice';
+import subjectsReducer from '../features/subjects/subjectsSlice';
 
 const rootpersistConfig = {
   key: 'root',
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   users: persistReducer(usersPersistConfig, usersReducer),
   questions: questionsReducer,
+  subjects: subjectsReducer,
 });
 
 const persistedReducer = persistReducer(rootpersistConfig, rootReducer);
