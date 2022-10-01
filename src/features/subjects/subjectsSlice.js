@@ -13,8 +13,8 @@ export const fetchSubjects = createAsyncThunk('subjects/fetchSubjects', async (t
   return res.data;
 });
 
-export const addSubject = createAsyncThunk('subjects/addSubject', async ({ token, subject }) => {
-  const res = await axios.post(`${baseUrl}/v1/subjects`, { subject },
+export const addSubject = createAsyncThunk('subjects/addSubject', async ({ token, subjects }) => {
+  const res = await axios.post(`${baseUrl}/v1/subjects`, { subjects },
     {
       headers: {
         Authorization: `Bearer ${token}`,

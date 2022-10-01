@@ -17,16 +17,6 @@ const Header = ({ auth }) => {
     }
   };
 
-  // useEffect(() => {
-  //   dispatch(resetUsers());
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   if (auth.entities[id]) {
-  //     dispatch(fetchUsers(auth.entities[id].token));
-  //   }
-  // }, [auth]);
-
   useEffect(() => {
     const test = document.querySelector('#test');
     document.addEventListener('mousedown', (e) => {

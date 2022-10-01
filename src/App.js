@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Homepage from './components/Homepage';
 import SigninPage from './features/auth/SigninPage';
 import SignupPage from './features/auth/SignupPage';
+import AddSubject from './features/subjects/AddSubject';
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -25,6 +26,11 @@ function App() {
           exact="true"
           path="/signin"
           element={<SigninPage />}
+        />
+        <Route
+          exact="true"
+          path="/subjects/add"
+          element={<AddSubject auth={auth} />}
         />
       </Routes>
     </div>
