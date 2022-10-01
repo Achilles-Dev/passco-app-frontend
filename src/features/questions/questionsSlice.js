@@ -3,8 +3,8 @@ import axios from 'axios';
 
 const baseUrl = 'https://passco-app-backend.herokuapp.com/api';
 
-export const addQuestion = createAsyncThunk('questions/addQuestion', async ({ token, question, subjectId }) => {
-  const res = await axios.post(`${baseUrl}/v1/questions?subject_id=${subjectId}`, { question },
+export const addQuestion = createAsyncThunk('questions/addQuestion', async ({ token, questions, subjectId }) => {
+  const res = await axios.post(`${baseUrl}/v1/questions?subject_id=${subjectId}`, { questions },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -23,8 +23,8 @@ export const fetchQuestions = createAsyncThunk('questions/fetchQuestions', async
   return res.data;
 });
 
-export const updateQuestion = createAsyncThunk('questions/updateQuestion', async ({ token, question, questionId }) => {
-  const res = await axios.patch(`${baseUrl}/v1/questions/${questionId}`, { question },
+export const updateQuestion = createAsyncThunk('questions/updateQuestion', async ({ token, questions, questionId }) => {
+  const res = await axios.patch(`${baseUrl}/v1/questions/${questionId}`, { questions },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ export const updateQuestion = createAsyncThunk('questions/updateQuestion', async
     });
   return {
     message: res.data,
-    question,
+    questions,
     id: questionId,
   };
 });
@@ -94,13 +94,13 @@ const questionsSlice = createSlice({
       })
       .addCase(updateQuestion.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        const { question, id } = action.payload;
+        const { questions, id } = action.payload;
         const singleQuestion = state.entities[id];
         if (singleQuestion) {
-          singleQuestion.year = question.year;
-          singleQuestion.question_no = question.question_no;
-          singleQuestion.content = question.content;
-          singleQuestion.options = question.options;
+          singleQuestion.year = questions.year;
+          singleQuestion.question_no = questions.question_no;
+          singleQuestion.content = questions.content;
+          singleQuestion.options = questions.options;
         }
       })
       .addCase(updateQuestion.rejected, (state) => {

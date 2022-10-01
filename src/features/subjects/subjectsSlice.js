@@ -23,8 +23,8 @@ export const addSubject = createAsyncThunk('subjects/addSubject', async ({ token
   return res.data;
 });
 
-export const updateSubject = createAsyncThunk('subjects/updateSubject', async ({ token, subject, subjectId }) => {
-  const res = await axios.patch(`${baseUrl}/v1/subjects/${subjectId}`, { subject },
+export const updateSubject = createAsyncThunk('subjects/updateSubject', async ({ token, subjects, subjectId }) => {
+  const res = await axios.patch(`${baseUrl}/v1/subjects/${subjectId}`, { subjects },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ export const updateSubject = createAsyncThunk('subjects/updateSubject', async ({
     });
   return {
     message: res.data,
-    subject,
+    subjects,
     id: subjectId,
   };
 });
@@ -94,11 +94,11 @@ const subjectsSlice = createSlice({
       })
       .addCase(updateSubject.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        const { subject, id } = action.payload;
+        const { subjects, id } = action.payload;
         const singleSubject = state.entities[id];
         if (singleSubject) {
-          singleSubject.name = subject.name;
-          singleSubject.code = subject.code;
+          singleSubject.name = subjects.name;
+          singleSubject.code = subjects.code;
         }
       })
       .addCase(updateSubject.rejected, (state) => {
