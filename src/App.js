@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Homepage from './components/Homepage';
 import SigninPage from './features/auth/SigninPage';
 import SignupPage from './features/auth/SignupPage';
+import AddQuestion from './features/questions/AddQuestion';
 import AddSubject from './features/subjects/AddSubject';
 
 function App() {
@@ -31,6 +32,11 @@ function App() {
           exact="true"
           path="/subjects/add"
           element={<AddSubject auth={auth} />}
+        />
+        <Route
+          exact="true"
+          path="/questions/add"
+          element={<AddQuestion auth={auth} />}
         />
       </Routes>
     </div>

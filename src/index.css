@@ -12,7 +12,7 @@
   }
 
   .input-form {
-    @apply flex flex-col mx-5 rounded px-8 pt-6 pb-8 mb-4;
+    @apply flex flex-col md:mx-5 mx-2 rounded md:px-8 pt-6 pb-8 mb-4;
   }
 
   .input-field {
