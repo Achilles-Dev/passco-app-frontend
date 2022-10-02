@@ -19,7 +19,7 @@ const fields = [
     index: 2, name: 'content', elementName: 'text-area', type: 'text', placeholder: 'Enter question',
   },
   {
-    index: 3, name: 'option', elementName: 'input', type: 'text', placeholder: 'Add option',
+    index: 3, name: 'option1', elementName: 'input', type: 'text', placeholder: 'Add option',
   },
 ];
 
@@ -29,8 +29,12 @@ const AddQuestion = ({ auth }) => {
   const [message, setMessage] = useState('');
   const [options, setOptions] = useState([...fields]);
   const initialValues = {
-    name: '',
-    code: '',
+    question_no: '',
+    content: '',
+    option1: '',
+    option2: '',
+    option3: '',
+    option4: '',
   };
 
   const handleFocus = () => {
@@ -38,13 +42,20 @@ const AddQuestion = ({ auth }) => {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required('Please enter subject name'),
-    code: Yup.number().max(999, 'Number must be less than 1000').min(100, 'Number must start from 100').required('Please enter subject code'),
+    question_no: Yup.number().min(1, 'Enter a number not less than 1').required('Please enter question number'),
+    content: Yup.string().required('Please enter question content'),
+    option1: Yup.string().required('Please enter question option'),
+    option2: Yup.string().required('Please enter question option'),
+    option3: Yup.string(),
+    option4: Yup.string(),
   });
 
   const handleSubmit = (values) => {
+    const optionValues = [values.option1, values.option2, values.option3, values.option4];
     const questions = {
-      ...values,
+      question_no: values.question_no,
+      content: values.content,
+      options: optionValues.filter((value) => value !== ''),
     };
     if (auth.entities[id]) {
       const { token } = auth.entities[id];
@@ -56,7 +67,7 @@ const AddQuestion = ({ auth }) => {
 
   const addOption = () => {
     const newField = {
-      index: options.length + 1, name: 'option', elementName: 'input', type: 'text', placeholder: 'Add option',
+      index: options.length + 1, name: `option${options.length - 1}`, elementName: 'input', type: 'text', placeholder: 'Add option',
     };
     setOptions([...options, newField]);
   };
@@ -69,10 +80,10 @@ const AddQuestion = ({ auth }) => {
     });
   };
 
-  const optionLength = options && options.filter((option) => option.name === 'option').length;
+  const optionLength = options && options.filter((option) => option.name.includes('option')).length;
 
   return (
-    <div className="flex flex-col justify-center h-screen bg-gray-200 md:px-30">
+    <div className="flex flex-col py-5 h-screen bg-gray-200 md:px-40">
       <div className="h-3/4 lg:px-20">
         <div className="flex flex-col justify-center border min-h-full py-3 mx-5 md:mx-10 rounded-lg bg-white shadow-md">
           <div>
@@ -90,7 +101,7 @@ const AddQuestion = ({ auth }) => {
               <Form className="input-form">
                 {
                   options.map((field) => (
-                    field.name === 'option'
+                    field.name.includes('option')
                       ? (
                         <div key={field.index} className="my-2">
                           <div className="flex gap-2">
@@ -126,7 +137,7 @@ const AddQuestion = ({ auth }) => {
                       )
                   ))
                 }
-                <div className={`flex justify-start ${optionLength === 4 ? 'hidden' : ''}`}>
+                <div className={`flex justify-start mb-3 ${optionLength === 4 ? 'hidden' : ''}`}>
                   <button type="button" className="btn-primary" onClick={addOption}>Add option</button>
                 </div>
                 <span className="text-red-600">{message}</span>

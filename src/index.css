@@ -23,3 +23,7 @@
     @apply text-blue-500 hover:text-blue-700 focus:text-blue-700 p-2 focus:border focus:rounded focus:border-blue-400;
   }
 }
+
+body {
+  background: #e5e7eb;
+}
