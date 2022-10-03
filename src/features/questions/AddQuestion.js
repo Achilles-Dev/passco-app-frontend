@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   ErrorMessage,
   Field,
@@ -10,6 +10,7 @@ import {
 import * as Yup from 'yup';
 import { addQuestion } from './questionsSlice';
 import closeIcon from '../../assets/images/icon-close.svg';
+import { selectAllSubjects } from '../subjects/subjectsSlice';
 
 const fields = [
   {
@@ -28,6 +29,15 @@ const AddQuestion = ({ auth }) => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
   const [options, setOptions] = useState([...fields]);
+  const subjects = useSelector(selectAllSubjects);
+  const [subjectId, setSubjectId] = useState(0);
+  const [subjectIdMessage, setSubjectIdMessage] = useState('');
+  const [year, setYear] = useState('');
+  const [yearMessage, setYearMessage] = useState('');
+  const currentYear = new Date().getFullYear();
+  const yearLength = currentYear - 1989;
+  const yearRange = Array.from({ length: yearLength }, (_, i) => i + 1990);
+
   const initialValues = {
     question_no: '',
     content: '',
@@ -39,6 +49,22 @@ const AddQuestion = ({ auth }) => {
 
   const handleFocus = () => {
     setMessage('');
+  };
+
+  const handleYearSelect = () => {
+    const year = document.querySelector('#year').value;
+    setYear(year);
+    if (yearMessage !== '') {
+      setYearMessage('');
+    }
+  };
+
+  const handleSubjectSelect = () => {
+    const id = document.querySelector('#subject-id').value;
+    setSubjectId(id);
+    if (subjectIdMessage !== '') {
+      setSubjectIdMessage('');
+    }
   };
 
   const validationSchema = Yup.object({
@@ -53,13 +79,18 @@ const AddQuestion = ({ auth }) => {
   const handleSubmit = (values) => {
     const optionValues = [values.option1, values.option2, values.option3, values.option4];
     const questions = {
+      year,
       question_no: values.question_no,
       content: values.content,
       options: optionValues.filter((value) => value !== ''),
     };
-    if (auth.entities[id]) {
+    if (auth.entities[id] && (subjectId > 0) && (year !== '')) {
       const { token } = auth.entities[id];
-      dispatch(addQuestion({ token, questions }));
+      dispatch(addQuestion({ token, questions, subjectId }));
+    } else if (year !== '' && (subjectId === 0 && typeof subjectId !== 'number')) {
+      setSubjectIdMessage('Please choose a subject');
+    } else if (year === '') {
+      setYearMessage('Please choose a year');
     }
   };
 
@@ -89,13 +120,41 @@ const AddQuestion = ({ auth }) => {
           <div>
             <h2 className="text-3xl text-center text-blue-400">Add Question</h2>
           </div>
+          <div className="flex flex-col justify-center px-3 md:px-10 mt-10">
+            <select
+              id="year"
+              className="block py-2.5 px-0 w-auto text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200"
+              onChange={handleYearSelect}
+            >
+              <option selected>Choose year</option>
+              { yearRange.map((year) => (
+                <option key={year}>{year}</option>
+              ))}
+            </select>
+            <span className="text-red-600">{yearMessage}</span>
+          </div>
+          <div className="flex flex-col justify-center px-3 md:px-10 mt-10">
+            <select
+              id="subject-id"
+              className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              onChange={handleSubjectSelect}
+            >
+              <option className="h-full" selected>Choose subject</option>
+              { subjects.map((subject) => (
+                <option key={subject.id} value={subject.id}>{subject.name}</option>
+              ))}
+            </select>
+            <span className="text-red-600">{subjectIdMessage}</span>
+          </div>
           <div className="w-full min-h-full">
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={(values, { resetForm }) => {
                 handleSubmit(values);
-                resetForm();
+                subjectId !== 0
+                  ? resetForm()
+                  : '';
               }}
             >
               <Form className="input-form">
