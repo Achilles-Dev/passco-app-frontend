@@ -70,7 +70,7 @@ const EditQuestion = ({ auth }) => {
       year,
       question_no: values.question_no,
       content: values.content,
-      options: optionValues.filter((value) => value !== ''),
+      options: optionValues.filter((value) => value !== '' || value !== null),
     };
     if (auth.entities[id] && (year !== '')) {
       const { token } = auth.entities[id];
@@ -129,9 +129,8 @@ const EditQuestion = ({ auth }) => {
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={(values, { resetForm }) => {
+              onSubmit={(values) => {
                 handleSubmit(values);
-                resetForm();
               }}
             >
               <Form className="input-form">
