@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Homepage from './components/Homepage';
+import AddAnswer from './features/answers/AddAnswer';
 import SigninPage from './features/auth/SigninPage';
 import SignupPage from './features/auth/SignupPage';
 import AddQuestion from './features/questions/AddQuestion';
@@ -37,6 +38,11 @@ function App() {
           exact="true"
           path="/questions/add"
           element={<AddQuestion auth={auth} />}
+        />
+        <Route
+          exact="true"
+          path="/answers/:questionId/add"
+          element={<AddAnswer auth={auth} />}
         />
       </Routes>
     </div>
