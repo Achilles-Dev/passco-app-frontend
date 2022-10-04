@@ -13,8 +13,8 @@ export const fetchAnswers = createAsyncThunk('answers/fetchAnswers', async ({ to
   return res.data;
 });
 
-export const addAnswer = createAsyncThunk('answers/addAnswer', async ({ token, subjectId, questionId }) => {
-  const res = await axios.post(`${baseUrl}/v1/answers?subject_id=${subjectId}?question_id=${questionId}`,
+export const addAnswer = createAsyncThunk('answers/addAnswer', async ({ token, answers, ids }) => {
+  const res = await axios.post(`${baseUrl}/v1/answers?subject_id=${ids.subjectId}?question_id=${ids.questionId}`, { answers },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -23,8 +23,8 @@ export const addAnswer = createAsyncThunk('answers/addAnswer', async ({ token, s
   return res.data;
 });
 
-export const updateAnswer = createAsyncThunk('answers/updateAnswer', async ({ token, answer, answerId }) => {
-  const res = await axios.patch(`${baseUrl}/v1/answers/${answerId}`, { answer },
+export const updateAnswer = createAsyncThunk('answers/updateAnswer', async ({ token, answers, answerId }) => {
+  const res = await axios.patch(`${baseUrl}/v1/answers/${answerId}`, { answers },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ export const updateAnswer = createAsyncThunk('answers/updateAnswer', async ({ to
     });
   return {
     message: res.data,
-    answer,
+    answers,
     id: answerId,
   };
 });
@@ -94,11 +94,10 @@ const answersSlice = createSlice({
       })
       .addCase(updateAnswer.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        const { subject, id } = action.payload;
-        const singleSubject = state.entities[id];
-        if (singleSubject) {
-          singleSubject.name = subject.name;
-          singleSubject.code = subject.code;
+        const { answers, id } = action.payload;
+        const singleAnswer = state.entities[id];
+        if (singleAnswer) {
+          singleAnswer.value = answers.value;
         }
       })
       .addCase(updateAnswer.rejected, (state) => {
