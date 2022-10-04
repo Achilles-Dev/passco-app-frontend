@@ -6,6 +6,7 @@ import AddAnswer from './features/answers/AddAnswer';
 import SigninPage from './features/auth/SigninPage';
 import SignupPage from './features/auth/SignupPage';
 import AddQuestion from './features/questions/AddQuestion';
+import EditQuestion from './features/questions/EditQuestion';
 import AddSubject from './features/subjects/AddSubject';
 
 function App() {
@@ -38,6 +39,11 @@ function App() {
           exact="true"
           path="/questions/add"
           element={<AddQuestion auth={auth} />}
+        />
+        <Route
+          exact="true"
+          path="/questions/:questionId/edit"
+          element={<EditQuestion auth={auth} />}
         />
         <Route
           exact="true"
