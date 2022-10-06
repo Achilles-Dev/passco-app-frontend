@@ -8,6 +8,7 @@ import SignupPage from './features/auth/SignupPage';
 import AddQuestion from './features/questions/AddQuestion';
 import EditQuestion from './features/questions/EditQuestion';
 import AddSubject from './features/subjects/AddSubject';
+import EditSubject from './features/subjects/EditSubject';
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -34,6 +35,11 @@ function App() {
           exact="true"
           path="/subjects/add"
           element={<AddSubject auth={auth} />}
+        />
+        <Route
+          exact="true"
+          path="/subjects/:subjectId/edit"
+          element={<EditSubject auth={auth} />}
         />
         <Route
           exact="true"
