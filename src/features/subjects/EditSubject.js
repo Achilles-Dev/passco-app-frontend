@@ -54,7 +54,7 @@ const EditSubject = ({ auth }) => {
   const renderError = (message) => <span className="text-red-600">{message}</span>;
 
   return (
-    <div className="flex flex-col justify-center h-screen bg-gray-200 md:px-40 lg:px-56">
+    <div className="flex flex-col py-5 h-screen bg-gray-200 md:px-40">
       <div className="h-3/4 lg:px-20">
         <div className="flex flex-col justify-center border min-h-full py-3 mx-5 md:mx-10 rounded-lg bg-white shadow-md">
           <div>
