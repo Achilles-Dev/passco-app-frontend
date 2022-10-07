@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import userIcon from '../assets/images/user_icon.svg';
 import { signOut } from '../features/auth/authSlice';
+import { selectAllSubjects } from '../features/subjects/subjectsSlice';
 
 const Header = ({ auth }) => {
   const id = auth.ids[0];
   const dispatch = useDispatch();
   const [visibility, setVisibility] = useState('hidden');
+  const [subjectVisibility, setSubjectVisibility] = useState('hidden');
+  const subjects = useSelector(selectAllSubjects);
+
   const toggleProfile = () => {
     if (visibility === 'hidden') {
       setVisibility('');
@@ -17,14 +21,25 @@ const Header = ({ auth }) => {
     }
   };
 
+  const handleSubjectFocus = () => {
+    if (subjectVisibility === 'hidden') {
+      setSubjectVisibility('');
+    } else {
+      setSubjectVisibility('hidden');
+    }
+  };
+
   useEffect(() => {
-    const test = document.querySelector('#test');
+    const icon = document.querySelector('#icon');
+    const subjectButton = document.querySelector('#subjectButton');
     document.addEventListener('mousedown', (e) => {
-      if (test && !test.contains(e.target) && visibility === '') {
+      if (icon && !icon.contains(e.target) && visibility === '') {
         setVisibility('hidden');
+      } else if (subjectButton && !subjectButton.contains(e.target) && subjectVisibility === '') {
+        setSubjectVisibility('hidden');
       }
     });
-  }, [visibility]);
+  }, [visibility, subjectVisibility]);
 
   const handleSubmit = () => {
     dispatch(signOut(id));
@@ -40,8 +55,48 @@ const Header = ({ auth }) => {
         </div>
         <div className="">
           {auth.entities[id] && auth.entities[id].token ? (
-            <ul className="navbar-nav flex flex-row justify-end pl-0 list-style-none mr-auto">
-              <div className="relative inline-block text-left" id="test">
+            <ul className="navbar-nav flex flex-row gap-10 items-center justify-end pl-0 list-style-none mr-auto">
+              <div className="inline-block text-left" id="subjectButton">
+                <li className="nav-item">
+                  <button
+                    className="hover:bg-blue-100 focus:bg-blue-100 p-2 hover:border hover:border-blue-400 rounded-full"
+                    type="button"
+                    id="menu-button"
+                    aria-expanded="true"
+                    aria-haspopup="true"
+                    onClick={handleSubjectFocus}
+                  >
+                    Subjects
+                  </button>
+                </li>
+              </div>
+              <div
+                className={`absolute left-0 top-16 z-10 w-full rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${subjectVisibility}`}
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="menu-button"
+                tabIndex="-1"
+                id="dropdown"
+              >
+                <div className="flex gap-3 flex-wrap p-2">
+                  { subjects.length > 0 ? subjects.map((subject) => (
+                    <div key={subject.id}>
+                      <Link
+                        to={`/subjects/${subject.id}`}
+                        className="text-gray-700 block px-4 py-2 hover:border hover:bg-gray-100 rounded-full hover:text-blue-400 focus:text-blue-400"
+                        role="menuitem"
+                        tabIndex="-1"
+                        id="menu-item-1"
+                        onClick={handleSubjectFocus}
+                      >
+                        {subject.name.toUpperCase()}
+                      </Link>
+                    </div>
+                  ))
+                    : ''}
+                </div>
+              </div>
+              <div className="relative inline-block text-left" id="icon">
                 <li className="nav-item">
                   <button
                     className="hover:bg-blue-100 focus:bg-blue-100 p-1 border border-blue-400 rounded-full"
