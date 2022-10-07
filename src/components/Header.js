@@ -31,15 +31,16 @@ const Header = ({ auth }) => {
 
   useEffect(() => {
     const icon = document.querySelector('#icon');
-    const subjectButton = document.querySelector('#subjectButton');
+    // const subjectButton = document.querySelector('#subjectButton');
+    const subjectDropdown = document.querySelector('#subject-dropdown');
     document.addEventListener('mousedown', (e) => {
       if (icon && !icon.contains(e.target) && visibility === '') {
         setVisibility('hidden');
-      } else if (subjectButton && !subjectButton.contains(e.target) && subjectVisibility === '') {
+      } else if (!subjectDropdown.contains(e.target) && subjectVisibility === '') {
         setSubjectVisibility('hidden');
       }
     });
-  }, [visibility, subjectVisibility]);
+  }, []);
 
   const handleSubmit = () => {
     dispatch(signOut(id));
@@ -76,7 +77,7 @@ const Header = ({ auth }) => {
                 aria-orientation="vertical"
                 aria-labelledby="menu-button"
                 tabIndex="-1"
-                id="dropdown"
+                id="subject-dropdown"
               >
                 <div className="flex gap-3 flex-wrap p-2">
                   { subjects.length > 0 ? subjects.map((subject) => (
