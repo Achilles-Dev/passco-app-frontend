@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import userIcon from '../assets/images/user_icon.svg';
 import { signOut } from '../features/auth/authSlice';
-import { selectAllSubjects } from '../features/subjects/subjectsSlice';
+import { fetchSubjects, selectAllSubjects } from '../features/subjects/subjectsSlice';
 
 const Header = ({ auth }) => {
   const id = auth.ids[0];
@@ -21,6 +21,13 @@ const Header = ({ auth }) => {
     }
   };
 
+  useEffect(() => {
+    if (auth.entities[id]) {
+      const { token } = auth.entities[id];
+      dispatch(fetchSubjects(token));
+    }
+  }, [subjects]);
+
   const handleSubjectFocus = () => {
     if (subjectVisibility === 'hidden') {
       setSubjectVisibility('');
@@ -31,16 +38,22 @@ const Header = ({ auth }) => {
 
   useEffect(() => {
     const icon = document.querySelector('#icon');
-    // const subjectButton = document.querySelector('#subjectButton');
-    const subjectDropdown = document.querySelector('#subject-dropdown');
     document.addEventListener('mousedown', (e) => {
-      if (icon && !icon.contains(e.target) && visibility === '') {
+      if (!icon.contains(e.target) && visibility === '') {
         setVisibility('hidden');
-      } else if (!subjectDropdown.contains(e.target) && subjectVisibility === '') {
+      }
+    });
+  }, [visibility]);
+
+  useEffect(() => {
+    const subjectDropdown = document.querySelector('#subject-dropdown');
+    const subjectButton = document.querySelector('#subjectButton');
+    document.addEventListener('mousedown', (e) => {
+      if (!subjectDropdown.contains(e.target) && !subjectButton.contains(e.target) && subjectVisibility === '') {
         setSubjectVisibility('hidden');
       }
     });
-  }, []);
+  }, [subjectVisibility]);
 
   const handleSubmit = () => {
     dispatch(signOut(id));
