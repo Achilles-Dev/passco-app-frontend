@@ -26,7 +26,7 @@ const Header = ({ auth }) => {
       const { token } = auth.entities[id];
       dispatch(fetchSubjects(token));
     }
-  }, [subjects]);
+  }, [dispatch]);
 
   const handleSubjectFocus = () => {
     if (subjectVisibility === 'hidden') {

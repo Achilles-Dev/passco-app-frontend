@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuestions, selectAllQuestions } from './questionsSlice';
 
-const optionLetters = ['A', 'B', 'C', 'D'];
+// const optionLetters = ['A', 'B', 'C', 'D'];
 
 const QuestionsList = ({ auth }) => {
   const id = auth.ids[0];
@@ -19,7 +19,7 @@ const QuestionsList = ({ auth }) => {
       const { token } = auth.entities[id];
       dispatch(fetchQuestions({ token, year, subjectId }));
     }
-  }, []);
+  }, [dispatch]);
 
   const initialValues = {
     option: '',
@@ -36,8 +36,7 @@ const QuestionsList = ({ auth }) => {
   return (
     <div>
       <h2>
-        Questions for the year,
-        {year}
+        {`Questions for the year, ${year}`}
       </h2>
       <div>
         <Formik
@@ -51,24 +50,21 @@ const QuestionsList = ({ auth }) => {
             { questions.map((question, index) => (
               <div key={question.id}>
                 <h3>
-                  {index}
-                  +1
+                  {`${index + 1}. `}
                   {question.content}
                 </h3>
                 {
-                  question.options.map((option, index) => (
-                    <div key={option}>
-                      <label htmlFor={`${option}${index}`}>
-                        {optionLetters[index]}
-                      </label>
-                      <Field
-                        name={`${option}${index}`}
-                        type="radio"
-                      >
-                        {option}
-                      </Field>
-                    </div>
+                  question.options.length > 0 ? question.options.map((option) => (
+                    option !== null
+                      ? (
+                        <div key={option}>
+                          <Field type="radio" name="option" value={option} />
+                          <>{` ${option}`}</>
+                        </div>
+                      )
+                      : ''
                   ))
+                    : ''
                 }
               </div>
             ))}

@@ -7,6 +7,7 @@ import SigninPage from './features/auth/SigninPage';
 import SignupPage from './features/auth/SignupPage';
 import AddQuestion from './features/questions/AddQuestion';
 import EditQuestion from './features/questions/EditQuestion';
+import QuestionsList from './features/questions/QuestionsList';
 import AddSubject from './features/subjects/AddSubject';
 import EditSubject from './features/subjects/EditSubject';
 
@@ -38,6 +39,11 @@ function App() {
         />
         <Route
           exact="true"
+          path="/subjects/:subjectId"
+          element={<h1>No content</h1>}
+        />
+        <Route
+          exact="true"
           path="/subjects/:subjectId/edit"
           element={<EditSubject auth={auth} />}
         />
@@ -55,6 +61,11 @@ function App() {
           exact="true"
           path="/answers/:questionId/add"
           element={<AddAnswer auth={auth} />}
+        />
+        <Route
+          exact="true"
+          path="/subjects/:subjectId/:year/questions"
+          element={<QuestionsList auth={auth} />}
         />
       </Routes>
     </div>

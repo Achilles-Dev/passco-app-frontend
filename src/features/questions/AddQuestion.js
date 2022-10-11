@@ -82,7 +82,7 @@ const AddQuestion = ({ auth }) => {
       year,
       question_no: values.question_no,
       content: values.content,
-      options: optionValues.filter((value) => value !== ''),
+      options: optionValues.filter((value) => value !== null),
     };
     if (auth.entities[id] && (subjectId > 0) && (year !== '')) {
       const { token } = auth.entities[id];
@@ -105,9 +105,9 @@ const AddQuestion = ({ auth }) => {
 
   const removeOption = (removeId) => {
     setOptions((options) => {
-      const test = options.filter((option) => option.index !== removeId)
+      const item = options.filter((option) => option.index !== removeId)
         .map((option, i) => ({ ...option, index: i + 1 }));
-      return test;
+      return item;
     });
   };
 
