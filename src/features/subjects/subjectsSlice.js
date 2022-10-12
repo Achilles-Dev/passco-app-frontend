@@ -64,7 +64,7 @@ const subjectsSlice = createSlice({
   reducers: {
     resetSubjects: (state) => {
       state.status = 'idle';
-      subjectsAdapter.removeAll;
+      subjectsAdapter.removeAll(state);
     },
   },
   extraReducers: (builder) => {

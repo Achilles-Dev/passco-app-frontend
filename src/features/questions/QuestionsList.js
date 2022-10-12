@@ -5,14 +5,16 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuestions, selectAllQuestions } from './questionsSlice';
+import { selectSubjectById } from '../subjects/subjectsSlice';
 
-// const optionLetters = ['A', 'B', 'C', 'D'];
+const optionLetters = ['A', 'B', 'C', 'D'];
 
 const QuestionsList = ({ auth }) => {
   const id = auth.ids[0];
   const questions = useSelector(selectAllQuestions);
   const dispatch = useDispatch();
   const { subjectId, year } = useParams();
+  const subject = useSelector((state) => selectSubjectById(state, subjectId));
 
   useEffect(() => {
     if (auth.entities[id]) {
@@ -34,11 +36,11 @@ const QuestionsList = ({ auth }) => {
   };
 
   return (
-    <div>
-      <h2>
-        {`Questions for the year, ${year}`}
+    <div className="m-2 p-3 bg-white h-screen">
+      <h2 className="text-center text-blue-400 text-3xl">
+        {` ${subject.name} questions for the year, ${year}`}
       </h2>
-      <div>
+      <div className="p-3 text-lg">
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -48,18 +50,21 @@ const QuestionsList = ({ auth }) => {
         >
           <Form>
             { questions.map((question, index) => (
-              <div key={question.id}>
+              <div key={question.id} className="py-2">
                 <h3>
                   {`${index + 1}. `}
                   {question.content}
                 </h3>
                 {
-                  question.options.length > 0 ? question.options.map((option) => (
+                  question.options.length > 0 ? question.options.map((option, i) => (
                     option !== null
                       ? (
-                        <div key={option}>
-                          <Field type="radio" name="option" value={option} />
-                          <>{` ${option}`}</>
+                        <div key={option} className="">
+                          <label htmlFor="option" className="flex gap-2">
+                            {`${optionLetters[i]}.`}
+                            <Field type="radio" name="option" value={optionLetters[i]} />
+                            <>{` ${option}`}</>
+                          </label>
                         </div>
                       )
                       : ''

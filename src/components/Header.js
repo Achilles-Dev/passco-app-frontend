@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import userIcon from '../assets/images/user_icon.svg';
 import { signOut } from '../features/auth/authSlice';
-import { fetchSubjects, selectAllSubjects } from '../features/subjects/subjectsSlice';
+import { fetchSubjects, resetSubjects, selectAllSubjects } from '../features/subjects/subjectsSlice';
+import { resetQuestions } from '../features/questions/questionsSlice';
+import { resetUsers } from '../features/users/usersSlice';
+import { resetAnswers } from '../features/answers/answersSlice';
 
 const Header = ({ auth }) => {
   const id = auth.ids[0];
@@ -26,7 +29,7 @@ const Header = ({ auth }) => {
       const { token } = auth.entities[id];
       dispatch(fetchSubjects(token));
     }
-  }, [dispatch]);
+  }, [dispatch, auth]);
 
   const handleSubjectFocus = () => {
     if (subjectVisibility === 'hidden') {
@@ -39,7 +42,7 @@ const Header = ({ auth }) => {
   useEffect(() => {
     const icon = document.querySelector('#icon');
     document.addEventListener('mousedown', (e) => {
-      if (!icon.contains(e.target) && visibility === '') {
+      if (icon && !icon.contains(e.target) && visibility === '') {
         setVisibility('hidden');
       }
     });
@@ -49,7 +52,7 @@ const Header = ({ auth }) => {
     const subjectDropdown = document.querySelector('#subject-dropdown');
     const subjectButton = document.querySelector('#subjectButton');
     document.addEventListener('mousedown', (e) => {
-      if (!subjectDropdown.contains(e.target) && !subjectButton.contains(e.target) && subjectVisibility === '') {
+      if ((subjectDropdown && !subjectDropdown.contains(e.target)) && (subjectButton && !subjectButton.contains(e.target)) && subjectVisibility === '') {
         setSubjectVisibility('hidden');
       }
     });
@@ -57,6 +60,10 @@ const Header = ({ auth }) => {
 
   const handleSubmit = () => {
     dispatch(signOut(id));
+    dispatch(resetSubjects());
+    dispatch(resetQuestions());
+    dispatch(resetUsers());
+    dispatch(resetAnswers());
   };
 
   return (
