@@ -92,7 +92,7 @@ const usersSlice = createSlice({
   reducers: {
     resetUsers: (state) => {
       state.status = 'idle';
-      usersAdapter.removeAll;
+      usersAdapter.removeAll(state);
     },
     addUserData: (state, action) => {
       const singleUser = state.entities[action.payload.user_id];
