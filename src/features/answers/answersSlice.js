@@ -64,7 +64,7 @@ const answersSlice = createSlice({
   reducers: {
     resetAnswers: (state) => {
       state.status = 'idle';
-      answersAdapter.removeAll;
+      answersAdapter.removeAll(state);
     },
   },
   extraReducers: (builder) => {
