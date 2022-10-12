@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchQuestions, selectAllQuestions } from './questionsSlice';
+import { fetchQuestions, resetQuestions, selectAllQuestions } from './questionsSlice';
 import { selectSubjectById } from '../subjects/subjectsSlice';
 
 const optionLetters = ['A', 'B', 'C', 'D'];
@@ -19,16 +19,30 @@ const QuestionsList = ({ auth }) => {
   useEffect(() => {
     if (auth.entities[id]) {
       const { token } = auth.entities[id];
+      dispatch(resetQuestions());
       dispatch(fetchQuestions({ token, year, subjectId }));
     }
-  }, [dispatch]);
+  }, [dispatch, auth, year]);
+
+  const optionsInitialValues = () => {
+    let object = {};
+    questions.forEach((question) => {
+      object = {
+        ...object,
+        [`option${question.question_no}`]: '',
+      };
+    });
+    return object;
+  };
 
   const initialValues = {
-    option: '',
+    options: optionsInitialValues(),
   };
 
   const validationSchema = Yup.object({
-
+    options: {
+      option: Yup.string().required('Please select an option'),
+    },
   });
 
   const handleSubmit = () => {
@@ -49,30 +63,41 @@ const QuestionsList = ({ auth }) => {
           }}
         >
           <Form>
-            { questions.map((question, index) => (
-              <div key={question.id} className="py-2">
-                <h3>
-                  {`${index + 1}. `}
-                  {question.content}
-                </h3>
-                {
-                  question.options.length > 0 ? question.options.map((option, i) => (
-                    option !== null
-                      ? (
-                        <div key={option} className="">
-                          <label htmlFor="option" className="flex gap-2">
-                            {`${optionLetters[i]}.`}
-                            <Field type="radio" name="option" value={optionLetters[i]} />
-                            <>{` ${option}`}</>
-                          </label>
+            {
+              questions.length > 0
+                ? (
+                  <div>
+                    { questions.map((question, index) => (
+                      <div key={question.id} className="py-2">
+                        <h3>
+                          {`${index + 1}. `}
+                          {question.content}
+                        </h3>
+                        <div role="group" className="">
+                          {
+                      question.options.length > 0 ? question.options.map((option, i) => (
+                        option !== null
+                          ? (
+                            <label key={option} htmlFor="option" className="flex gap-2">
+                              {`${optionLetters[i]}.`}
+                              <Field type="radio" id="option" name={`options[option${index + 1}]`} value={optionLetters[i]} />
+                              <>{` ${option}`}</>
+                            </label>
+                          )
+                          : ''
+                      ))
+                        : ''
+                    }
                         </div>
-                      )
-                      : ''
-                  ))
-                    : ''
-                }
-              </div>
-            ))}
+                      </div>
+                    ))}
+                    <div id="save-button" className="flex mt-5">
+                      <button type="submit" className="btn-primary disabled:btn-primary-light">Submit</button>
+                    </div>
+                  </div>
+                )
+                : <div><p>Questions not available</p></div>
+            }
           </Form>
         </Formik>
       </div>
