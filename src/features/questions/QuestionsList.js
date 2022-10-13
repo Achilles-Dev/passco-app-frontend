@@ -78,9 +78,9 @@ const QuestionsList = ({ auth }) => {
                       question.options.length > 0 ? question.options.map((option, i) => (
                         option !== null
                           ? (
-                            <label key={option} htmlFor="option" className="flex gap-2">
+                            <label key={option} htmlFor={`question${question.question_no}option${i + 1}`} className="flex gap-2">
                               {`${optionLetters[i]}.`}
-                              <Field type="radio" id="option" name={`options[option${index + 1}]`} value={optionLetters[i]} />
+                              <Field type="radio" id={`question${question.question_no}option${i + 1}`} name={`options[option${index + 1}]`} value={optionLetters[i]} />
                               <>{` ${option}`}</>
                             </label>
                           )

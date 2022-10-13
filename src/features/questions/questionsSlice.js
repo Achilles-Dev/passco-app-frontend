@@ -14,7 +14,7 @@ export const addQuestion = createAsyncThunk('questions/addQuestion', async ({ to
 });
 
 export const fetchQuestions = createAsyncThunk('questions/fetchQuestions', async ({ token, year, subjectId }) => {
-  const res = await axios.get(`${baseUrl}/v1/questions?year=${year}?subject_id=${subjectId}`,
+  const res = await axios.get(`${baseUrl}/v1/questions?year=${year}&subject_id=${subjectId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
