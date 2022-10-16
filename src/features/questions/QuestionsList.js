@@ -51,10 +51,10 @@ const QuestionsList = ({ auth }) => {
 
   return (
     <div className="m-2 p-3 bg-white h-screen">
-      <h2 className="text-center text-blue-400 text-3xl">
+      <h2 className="text-center text-blue-400 text-3xl m-2">
         {` ${subject.name} questions for the year, ${year}`}
       </h2>
-      <div className="p-3 text-lg">
+      <div className="p-3 text-lg border border-blue-400">
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -78,9 +78,14 @@ const QuestionsList = ({ auth }) => {
                       question.options.length > 0 ? question.options.map((option, i) => (
                         option !== null
                           ? (
-                            <label key={option} htmlFor={`question${question.question_no}option${i + 1}`} className="flex gap-2">
+                            <label key={option} htmlFor={`question${question.question_no}option${i + 1}`} className="flex gap-2 my-2">
                               {`${optionLetters[i]}.`}
-                              <Field type="radio" id={`question${question.question_no}option${i + 1}`} name={`options[option${index + 1}]`} value={optionLetters[i]} />
+                              <Field
+                                type="radio"
+                                id={`question${question.question_no}option${i + 1}`}
+                                name={`options[option${index + 1}]`}
+                                value={optionLetters[i]}
+                              />
                               <>{` ${option}`}</>
                             </label>
                           )
