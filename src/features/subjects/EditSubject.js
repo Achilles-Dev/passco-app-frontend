@@ -7,7 +7,7 @@ import {
   Formik,
   Form,
 } from 'formik';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { selectSubjectById, updateSubject } from './subjectsSlice';
 
@@ -26,6 +26,7 @@ const EditSubject = ({ auth }) => {
   const id = auth.ids[0];
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const initialValues = {
     name: subject.name,
@@ -48,6 +49,7 @@ const EditSubject = ({ auth }) => {
     if (auth.entities[id]) {
       const { token } = auth.entities[id];
       dispatch(updateSubject({ token, subjects, subjectId }));
+      navigate('/');
     }
   };
 

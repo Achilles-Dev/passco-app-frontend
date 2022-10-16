@@ -65,7 +65,7 @@ const QuestionsPage = ({ auth }) => {
           ? (
             <p className="text-xl">
               {' Select question year for'}
-              <span className="text-red-400 text-2xl">{` ${subject.name} `}</span>
+              <span className="text-red-400 text-2xl">{` ${subject.name.toUpperCase()} `}</span>
               to continue.
             </p>
           )

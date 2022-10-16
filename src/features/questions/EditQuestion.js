@@ -8,7 +8,7 @@ import {
   Form,
 } from 'formik';
 import * as Yup from 'yup';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { selectQuestionById, updateQuestion } from './questionsSlice';
 import closeIcon from '../../assets/images/icon-close.svg';
 
@@ -33,6 +33,7 @@ const EditQuestion = ({ auth }) => {
   const currentYear = new Date().getFullYear();
   const yearLength = currentYear - 1989;
   const yearRange = Array.from({ length: yearLength }, (_, i) => i + 1990);
+  const navigate = useNavigate();
 
   const initialValues = {
     question_no: question.question_no,
@@ -75,6 +76,7 @@ const EditQuestion = ({ auth }) => {
     if (auth.entities[id] && (year !== '')) {
       const { token } = auth.entities[id];
       dispatch(updateQuestion({ token, questions, questionId }));
+      navigate('/');
     } else {
       setYearMessage('Please choose a year');
     }
