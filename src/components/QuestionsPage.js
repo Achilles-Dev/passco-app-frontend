@@ -25,7 +25,6 @@ const QuestionsPage = ({ auth }) => {
   }, [status]);
 
   useEffect(() => {
-    console.log(auth);
     if (auth.entities[id]) {
       const { token } = auth.entities[id];
       dispatch(resetQuestions());

@@ -17,6 +17,7 @@ const QuestionsList = ({ questions }) => {
     return object;
   };
 
+  console.log(typeof questions);
   const initialValues = {
     options: optionsInitialValues(),
   };
@@ -86,13 +87,13 @@ const QuestionsList = ({ questions }) => {
 };
 
 QuestionsList.propTypes = {
-  questions: PropTypes.shape([{
-    id: PropTypes.number,
-    question_no: PropTypes.number,
-    subject_id: PropTypes.number,
-    year: PropTypes.string,
-    content: PropTypes.string,
-  }]).isRequired,
+  questions: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      question_no: PropTypes.number,
+      content: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default QuestionsList;
