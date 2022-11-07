@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn-primary {
+    @apply py-2 px-6 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+  }
+
+  .btn-primary-light {
+    @apply py-2 px-6 bg-blue-200 text-white font-semibold rounded-lg shadow-md hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+  }
+
+  .input-form {
+    @apply flex flex-col md:mx-5 mx-2 rounded md:px-8 pt-6 pb-8 mb-4;
+  }
+
+  .input-field {
+    @apply shadow appearance-none border rounded w-full py-3 mb-3 px-3 text-gray-700 leading-tight focus:outline-blue-50 focus:scale-y-125;
+  }
+
+  .nav-link {
+    @apply text-blue-500 hover:text-blue-700 focus:text-blue-700 p-2 focus:border focus:rounded focus:border-blue-400;
+  }
+}
+
+body {
+  background: #e5e7eb;
+}
