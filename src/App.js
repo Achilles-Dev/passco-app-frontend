@@ -8,7 +8,7 @@ import SigninPage from './features/auth/SigninPage';
 import SignupPage from './features/auth/SignupPage';
 import AddQuestion from './features/questions/AddQuestion';
 import EditQuestion from './features/questions/EditQuestion';
-import QuestionsList from './features/questions/QuestionsList';
+import QuestionsPage from './components/QuestionsPage';
 import AddSubject from './features/subjects/AddSubject';
 import EditSubject from './features/subjects/EditSubject';
 
@@ -66,7 +66,7 @@ function App() {
         <Route
           exact="true"
           path="/subjects/:subjectId/:year/questions"
-          element={<QuestionsList auth={auth} />}
+          element={<QuestionsPage auth={auth} />}
         />
       </Routes>
     </div>
