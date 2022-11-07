@@ -17,7 +17,6 @@ const QuestionsList = ({ questions }) => {
     return object;
   };
 
-  console.log(typeof questions);
   const initialValues = {
     options: optionsInitialValues(),
   };

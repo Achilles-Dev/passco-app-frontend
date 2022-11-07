@@ -8,7 +8,6 @@ import { fetchQuestions } from '../features/questions/questionsSlice';
 const SubjectSelectPage = ({ auth }) => {
   const id = auth.ids[0];
   let { subjectId } = useParams();
-  const navigate = useNavigate();
   const singleSubject = useSelector((state) => selectSubjectById(state, subjectId));
   const multipleSubjects = useSelector((selectAllSubjects));
   const [subject, setSubject] = useState({});
@@ -20,6 +19,7 @@ const SubjectSelectPage = ({ auth }) => {
   const yearLength = currentYear - 1989;
   const yearRange = Array.from({ length: yearLength }, (_, i) => i + 1990);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (subjectId !== '0') {
@@ -29,16 +29,16 @@ const SubjectSelectPage = ({ auth }) => {
     }
   }, [singleSubject, multipleSubjects]);
 
-  const handleYearSelect = () => {
-    const selectedYear = document.querySelector('#year').value;
+  const handleYearSelect = (e) => {
+    const selectedYear = e.target.value;
     setYear(selectedYear);
     if (yearMessage !== '') {
       setYearMessage('');
     }
   };
 
-  const handleSubjectSelect = () => {
-    const id = document.querySelector('#subject-id').value;
+  const handleSubjectSelect = (e) => {
+    const id = e.target.value;
     subjectId = Number(id);
     if (subjectIdMessage !== '') {
       setSubjectIdMessage('');
@@ -74,26 +74,26 @@ const SubjectSelectPage = ({ auth }) => {
       { Object.keys(subject).length === 0
         ? (
           <div className="p-3 text-lg">
-            <div className="flex flex-col justify-center px-3 md:px-10 mt-10">
+            <div className="flex flex-col justify-center md:px-3 mt-10">
               <select
                 id="year"
-                className="block py-2.5 px-0 w-auto text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200"
+                className="block py-2 px-0 w-4/5 lg:w-1/2 text-normal text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200"
                 onChange={handleYearSelect}
               >
-                <option selected>Choose year</option>
-                { yearRange.map((year) => (
-                  <option key={year}>{year}</option>
+                <option>Choose year</option>
+                { yearRange.map((yearR) => (
+                  <option key={yearR} value={yearR}>{yearR}</option>
                 ))}
               </select>
               <span className="text-red-600">{yearMessage}</span>
             </div>
-            <div className="flex flex-col justify-center px-3 md:px-10 mt-10">
+            <div className="flex flex-col justify-center md:px-3 mt-10">
               <select
                 id="subject-id"
-                className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                className="block py-2 px-0 w-4/5 lg:w-1/2 text-normal text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
                 onChange={handleSubjectSelect}
               >
-                <option className="h-full" selected>Choose subject</option>
+                <option className="h-full">Choose subject</option>
                 { subjects.map((subject) => (
                   <option key={subject.id} value={subject.id}>{subject.name}</option>
                 ))}
@@ -104,22 +104,22 @@ const SubjectSelectPage = ({ auth }) => {
         )
         : (
           <div className="p-3 text-lg">
-            <div className="flex flex-col justify-center px-3 md:px-10 mt-10">
+            <div className="flex mt-10">
               <select
                 id="year"
-                className="block py-2.5 px-0 w-auto text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200"
+                className="block py-2 w-4/5 lg:w-1/2 text-normal text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200"
                 onChange={handleYearSelect}
               >
-                <option selected>Choose year</option>
-                { yearRange.map((year) => (
-                  <option key={year}>{year}</option>
+                <option>Choose year</option>
+                { yearRange.map((yearR) => (
+                  <option key={yearR} value={yearR}>{yearR}</option>
                 ))}
               </select>
               <span className="text-red-600">{yearMessage}</span>
             </div>
           </div>
         )}
-      <div className="flex mt-5">
+      <div className="flex p-3 text-normal">
         <button
           type="button"
           className="btn-primary disabled:btn-primary-light"
