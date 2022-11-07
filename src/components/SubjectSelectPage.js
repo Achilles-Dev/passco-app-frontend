@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAllSubjects, selectSubjectById } from '../features/subjects/subjectsSlice';
 import { fetchQuestions } from '../features/questions/questionsSlice';
 
-const QuestionsPage = ({ auth }) => {
+const SubjectSelectPage = ({ auth }) => {
   const id = auth.ids[0];
   let { subjectId } = useParams();
   const navigate = useNavigate();
@@ -132,8 +132,8 @@ const QuestionsPage = ({ auth }) => {
   );
 };
 
-QuestionsPage.propTypes = {
+SubjectSelectPage.propTypes = {
   auth: PropTypes.func.isRequired,
 };
 
-export default QuestionsPage;
+export default SubjectSelectPage;
