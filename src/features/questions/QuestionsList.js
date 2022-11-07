@@ -22,9 +22,9 @@ const QuestionsList = ({ questions }) => {
   };
 
   const validationSchema = Yup.object({
-    options: {
+    options: Yup.object({
       option: Yup.string().required('Please select an option'),
-    },
+    }),
   });
 
   const handleSubmit = () => {
@@ -86,7 +86,13 @@ const QuestionsList = ({ questions }) => {
 };
 
 QuestionsList.propTypes = {
-  questions: PropTypes.arrayOf.isRequired,
+  questions: PropTypes.shape([{
+    id: PropTypes.number,
+    question_no: PropTypes.number,
+    subject_id: PropTypes.number,
+    year: PropTypes.string,
+    content: PropTypes.string,
+  }]).isRequired,
 };
 
 export default QuestionsList;
