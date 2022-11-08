@@ -6,6 +6,7 @@ import { selectSubjectById } from '../features/subjects/subjectsSlice';
 import { fetchQuestions, resetQuestions, selectAllQuestions } from '../features/questions/questionsSlice';
 import Spinner from './Spinner';
 import QuestionsList from '../features/questions/QuestionsList';
+import { addSignedInUser } from '../features/users/usersSlice';
 
 const QuestionsPage = ({ auth }) => {
   const { subjectId, year } = useParams();
@@ -36,6 +37,7 @@ const QuestionsPage = ({ auth }) => {
       const { token } = auth.entities[id];
       dispatch(resetQuestions());
       dispatch(fetchQuestions({ token, year, subjectId }));
+      dispatch(addSignedInUser(auth.entities[id].user));
     }
   }, [dispatch, auth, year]);
 
