@@ -12,6 +12,7 @@ import QuestionsPage from './components/QuestionsPage';
 import AddSubject from './features/subjects/AddSubject';
 import EditSubject from './features/subjects/EditSubject';
 import { selectAllSubjects } from './features/subjects/subjectsSlice';
+import ResultsPage from './components/ResultsPage';
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -69,6 +70,11 @@ function App() {
           exact="true"
           path="/subjects/:subjectId/:year/questions"
           element={<QuestionsPage auth={auth} />}
+        />
+        <Route
+          exact="true"
+          path="/subjects/:subjectId/:year/questions/results"
+          element={<ResultsPage auth={auth} />}
         />
       </Routes>
     </div>

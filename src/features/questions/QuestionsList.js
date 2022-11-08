@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { storeUserWork } from '../users/usersSlice';
@@ -11,6 +12,7 @@ const QuestionsList = ({
   questions, subjectId, userId, year,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const optionsInitialValues = () => {
     let object = {};
     questions.forEach((question) => {
@@ -41,6 +43,7 @@ const QuestionsList = ({
     dispatch(storeUserWork({
       userId, subjectId, year, work,
     }));
+    navigate(`/subjects/${subjectId}/${year}/questions/results`);
   };
 
   return (
