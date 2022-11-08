@@ -2,10 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { storeUserWork } from '../users/usersSlice';
 
 const optionLetters = ['A', 'B', 'C', 'D'];
 
-const QuestionsList = ({ questions }) => {
+const QuestionsList = ({
+  questions, subjectId, userId, year,
+}) => {
+  const dispatch = useDispatch();
   const optionsInitialValues = () => {
     let object = {};
     questions.forEach((question) => {
@@ -21,22 +26,30 @@ const QuestionsList = ({ questions }) => {
     options: optionsInitialValues(),
   };
 
-  const validationSchema = Yup.object({
-    options: Yup.object({
-      option: Yup.string().required('Please select an option'),
-    }),
+  const optionsValidation = {};
+
+  questions.forEach((question) => {
+    Object.assign(optionsValidation, { [`option${question.question_no}`]: Yup.string().required('Please select an option') });
   });
 
-  const handleSubmit = () => {
+  const validationSchema = Yup.object({
+    options: Yup.object(optionsValidation),
+  });
 
+  const handleSubmit = (values) => {
+    const work = [values.options];
+    dispatch(storeUserWork({
+      userId, subjectId, year, work,
+    }));
   };
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
+      onSubmit={(values, { resetForm }) => {
         handleSubmit(values);
+        resetForm();
       }}
     >
       <Form>
@@ -73,7 +86,7 @@ const QuestionsList = ({ questions }) => {
                     </div>
                   </div>
                 ))}
-                <div id="save-button" className="flex mt-5">
+                <div className="flex mt-5">
                   <button type="submit" className="btn-primary disabled:btn-primary-light">Submit</button>
                 </div>
               </div>
@@ -93,6 +106,9 @@ QuestionsList.propTypes = {
       content: PropTypes.string,
     }),
   ).isRequired,
+  subjectId: PropTypes.string.isRequired,
+  userId: PropTypes.number.isRequired,
+  year: PropTypes.string.isRequired,
 };
 
 export default QuestionsList;

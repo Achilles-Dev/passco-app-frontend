@@ -13,6 +13,10 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async (token) => 
   return res.data;
 });
 
+export const addSignedInUser = createAsyncThunk('users/addSignedInUser', async (user) => (
+  user
+));
+
 export const updateUser = createAsyncThunk('users/updateUser', async ({ token, user, userId }) => {
   const res = await axios.patch(`${baseUrl}/v1/users/${user.id}`, { user },
     {
@@ -64,6 +68,17 @@ export const addUserData = createAsyncThunk('users/addUserData', async ({
   return res.data;
 });
 
+export const storeUserWork = createAsyncThunk('users/storeUserWork', ({
+  userId, subjectId, year, work,
+}) => (
+  {
+    userId,
+    subjectId,
+    year,
+    work,
+  }
+));
+
 export const deleteUserData = createAsyncThunk('users/deleteUserData', async ({ token, userDataId }) => {
   const res = await axios
     .delete(`${baseUrl}/v1/user_data/${userDataId}`,
@@ -77,6 +92,12 @@ export const deleteUserData = createAsyncThunk('users/deleteUserData', async ({ 
     id: userDataId,
   };
 });
+
+export const deleteUserWork = createAsyncThunk('users/deleteUserWork', ({ userId }) => (
+  {
+    userId,
+  }
+));
 
 const usersAdapter = createEntityAdapter();
 
@@ -93,25 +114,6 @@ const usersSlice = createSlice({
     resetUsers: (state) => {
       state.status = 'idle';
       usersAdapter.removeAll(state);
-    },
-    addUserData: (state, action) => {
-      const singleUser = state.entities[action.payload.user_id];
-      if (singleUser) {
-        state.status = 'fulfilled';
-        state.auth = {
-          ...state.auth, userData: action.payload,
-        };
-      }
-    },
-    deleteUserData: (state, action) => {
-      const singleUser = state.entities[action.payload.id];
-      if (singleUser) {
-        state.status = 'fulfilled';
-        state.auth.userData = {
-          ...state.auth.userData,
-          userData: state.auth.userData.filter((id) => id !== action.payload.id),
-        };
-      }
     },
   },
   extraReducers: (builder) => {
@@ -150,6 +152,60 @@ const usersSlice = createSlice({
         usersAdapter.removeOne(state, id);
       })
       .addCase(deleteUser.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(addUserData.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(addUserData.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const singleUser = state.entities[action.payload.user_id];
+        if (singleUser) {
+          singleUser.userData = [...singleUser.userData, action.payload];
+        }
+      })
+      .addCase(addUserData.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(storeUserWork.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(storeUserWork.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const singleUser = state.entities[action.payload.userId];
+        if (singleUser) {
+          state.entities[action.payload.userId] = {
+            ...state.entities[action.payload.userId], userWork: action.payload,
+          };
+        }
+      })
+      .addCase(storeUserWork.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(deleteUserData.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(deleteUserData.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const singleUser = state.entities[action.payload.userId];
+        if (singleUser) {
+          singleUser.userData = {};
+        }
+      })
+      .addCase(deleteUserData.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(deleteUserWork.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(deleteUserWork.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const singleUser = state.entities[action.payload.userId];
+        if (singleUser) {
+          singleUser.userWork = {};
+        }
+      })
+      .addCase(deleteUserWork.rejected, (state) => {
         state.status = 'failed';
       });
   },

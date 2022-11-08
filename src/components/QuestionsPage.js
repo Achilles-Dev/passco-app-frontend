@@ -20,7 +20,14 @@ const QuestionsPage = ({ auth }) => {
     if (status === 'loading') {
       setContent(<Spinner />);
     } else {
-      setContent(<QuestionsList questions={questions} />);
+      setContent(
+        <QuestionsList
+          questions={questions}
+          subjectId={subjectId}
+          userId={id}
+          year={year}
+        />,
+      );
     }
   }, [status]);
 

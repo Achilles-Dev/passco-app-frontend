@@ -11,12 +11,14 @@ import EditQuestion from './features/questions/EditQuestion';
 import QuestionsPage from './components/QuestionsPage';
 import AddSubject from './features/subjects/AddSubject';
 import EditSubject from './features/subjects/EditSubject';
+import { selectAllSubjects } from './features/subjects/subjectsSlice';
 
 function App() {
   const auth = useSelector((state) => state.auth);
+  const subjects = useSelector(selectAllSubjects);
   return (
     <div className="flex flex-col h-screen">
-      <Header auth={auth} />
+      <Header auth={auth} subjects={subjects} />
       <Routes>
         <Route
           exact="true"
