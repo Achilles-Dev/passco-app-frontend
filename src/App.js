@@ -2,21 +2,23 @@ import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Homepage from './components/Homepage';
-import QuestionsPage from './components/QuestionsPage';
+import SubjectSelectPage from './components/SubjectSelectPage';
 import AddAnswer from './features/answers/AddAnswer';
 import SigninPage from './features/auth/SigninPage';
 import SignupPage from './features/auth/SignupPage';
 import AddQuestion from './features/questions/AddQuestion';
 import EditQuestion from './features/questions/EditQuestion';
-import QuestionsList from './features/questions/QuestionsList';
+import QuestionsPage from './components/QuestionsPage';
 import AddSubject from './features/subjects/AddSubject';
 import EditSubject from './features/subjects/EditSubject';
+import { selectAllSubjects } from './features/subjects/subjectsSlice';
 
 function App() {
   const auth = useSelector((state) => state.auth);
+  const subjects = useSelector(selectAllSubjects);
   return (
     <div className="flex flex-col h-screen">
-      <Header auth={auth} />
+      <Header auth={auth} subjects={subjects} />
       <Routes>
         <Route
           exact="true"
@@ -41,7 +43,7 @@ function App() {
         <Route
           exact="true"
           path="/subjects/:subjectId"
-          element={<QuestionsPage auth={auth} />}
+          element={<SubjectSelectPage auth={auth} />}
         />
         <Route
           exact="true"
@@ -66,7 +68,7 @@ function App() {
         <Route
           exact="true"
           path="/subjects/:subjectId/:year/questions"
-          element={<QuestionsList auth={auth} />}
+          element={<QuestionsPage auth={auth} />}
         />
       </Routes>
     </div>

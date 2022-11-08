@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import userIcon from '../assets/images/user_icon.svg';
 import { signOut } from '../features/auth/authSlice';
-import { fetchSubjects, resetSubjects, selectAllSubjects } from '../features/subjects/subjectsSlice';
+import { fetchSubjects, resetSubjects } from '../features/subjects/subjectsSlice';
 import { resetQuestions } from '../features/questions/questionsSlice';
 import { resetUsers } from '../features/users/usersSlice';
 import { resetAnswers } from '../features/answers/answersSlice';
 
-const Header = ({ auth }) => {
+const Header = ({ auth, subjects }) => {
   const id = auth.ids[0];
   const dispatch = useDispatch();
   const [visibility, setVisibility] = useState('hidden');
   const [subjectVisibility, setSubjectVisibility] = useState('hidden');
-  const subjects = useSelector(selectAllSubjects);
 
   const toggleProfile = () => {
     if (visibility === 'hidden') {
@@ -202,7 +201,18 @@ const Header = ({ auth }) => {
 };
 
 Header.propTypes = {
-  auth: PropTypes.func.isRequired,
+  auth: PropTypes.shape({
+    ids: PropTypes.arrayOf(PropTypes.number),
+    entities: PropTypes.shape({
+      token: PropTypes.string,
+    }),
+  }).isRequired,
+  subjects: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default Header;

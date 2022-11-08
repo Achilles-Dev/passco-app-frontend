@@ -201,7 +201,7 @@ const AddQuestion = ({ auth }) => {
                 </div>
                 <span className="text-red-600">{message}</span>
                 <div id="save-button" className="flex justify-center">
-                  <button type="submit" className="btn-primary disabled:btn-primary-light">Save Question</button>
+                  <button type="submit" className="border px-10 py-3 border-green text-green hover:bg-slate-700">Save Question</button>
                 </div>
               </Form>
             </Formik>
@@ -213,7 +213,12 @@ const AddQuestion = ({ auth }) => {
 };
 
 AddQuestion.propTypes = {
-  auth: PropTypes.func.isRequired,
+  auth: PropTypes.shape({
+    ids: PropTypes.arrayOf(PropTypes.number),
+    entities: PropTypes.shape({
+      token: PropTypes.string,
+    }),
+  }).isRequired,
 };
 
 export default AddQuestion;

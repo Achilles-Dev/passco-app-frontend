@@ -191,7 +191,12 @@ const EditQuestion = ({ auth }) => {
 };
 
 EditQuestion.propTypes = {
-  auth: PropTypes.func.isRequired,
+  auth: PropTypes.shape({
+    ids: PropTypes.arrayOf(PropTypes.number),
+    entities: PropTypes.shape({
+      token: PropTypes.string,
+    }),
+  }).isRequired,
 };
 
 export default EditQuestion;
