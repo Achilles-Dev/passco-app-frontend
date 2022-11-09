@@ -10,10 +10,11 @@ const ResultComparison = ({ answers, user }) => {
   const answerMap = new Map();
 
   answers.forEach((answer) => {
+    // question_id for anser was used here, could be changed later
     answerMap.set(answer.question_id, answer);
   });
 
-  console.log(user);
+  console.log(user.userWork.work[0][`option${1}`]);
 
   return (
     <div>
@@ -22,6 +23,10 @@ const ResultComparison = ({ answers, user }) => {
           <h3>
             {`${index + 1}. `}
             {question.content}
+            {
+              user.userWork.work[0][`option${question.question_no}`] === answerMap.get(question.id).value
+                ? <span className="ml-3 text-green-500">Correct</span> : <span className="ml-3 text-red-500">Wrong</span>
+            }
           </h3>
           <div className="">
             {
@@ -30,7 +35,10 @@ const ResultComparison = ({ answers, user }) => {
                   ? (
                     <div
                       key={option}
-                      className={`flex gap-3 my-2 ${answerMap.get(question.question_no).value === optionLetters[i] ? 'border border-green-400' : ''}`}
+                      className={`flex gap-3 my-2 ${answerMap.get(question.id).value === optionLetters[i] ? 'border border-green-500 rounded' : ''}
+                      ${user.userWork.work[0][`option${question.question_no}`] === optionLetters[i]
+                          && answerMap.get(question.id).value !== optionLetters[i] ? 'border  border-red-500 rounded' : ''}
+                      `}
                     >
                       {`${optionLetters[i]}.`}
                       <>{` ${option}`}</>
