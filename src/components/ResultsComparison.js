@@ -14,8 +14,6 @@ const ResultComparison = ({ answers, user }) => {
     answerMap.set(answer.question_id, answer);
   });
 
-  console.log(user.userWork.work[0][`option${1}`]);
-
   return (
     <div>
       { questions.map((question, index) => (
