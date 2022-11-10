@@ -9,21 +9,25 @@ const ResultsPage = ({ auth }) => {
   const id = auth.ids[0];
   const user = useSelector((state) => selectUserById(state, id));
   const answers = useSelector(selectAllAnswers);
-  const [score, setScore] = useState('');
-  const [rightAnswers, setRightAnswers] = useState('');
+  const [score, setScore] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState('');
   const [scoreVisibility, setScoreVisibility] = useState('hidden');
-  const [rightAnswersVisibility, setRightAnswersVisibility] = useState('hidden');
+  const [correctAnswersVisibility, setCorrectAnswersVisibility] = useState('hidden');
 
   const handleScore = (e) => {
+    answers.forEach((answer) => {
+      if (user.userWork.work[0][`option${answer.answer_no}`] === answer.value) {
+        setScore((score) => score + 1);
+      }
+    });
     setScoreVisibility('flex');
     e.target.disabled = true;
-    setScore(0);
   };
 
-  const handleRightAnswers = (e) => {
-    setRightAnswersVisibility('flex');
+  const handlecorrectAnswers = (e) => {
+    setCorrectAnswers(<ResultComparison answers={answers} user={user} />);
+    setCorrectAnswersVisibility('flex');
     e.target.disabled = true;
-    setRightAnswers(<ResultComparison answers={answers} user={user} />);
   };
 
   return (
@@ -37,14 +41,14 @@ const ResultsPage = ({ auth }) => {
             <button className="btn-primary disabled:btn-primary-light" type="button" onClick={handleScore}>Click to view Score</button>
           </div>
           <div className="flex">
-            <button className="btn-primary disabled:btn-primary-light" type="button" onClick={handleRightAnswers}>Click to see work</button>
+            <button className="btn-primary disabled:btn-primary-light" type="button" onClick={handlecorrectAnswers}>Click to see work</button>
           </div>
         </div>
         <div className={`${scoreVisibility} justify-center border border-blue-400 py-3 text-dark-400`}>
           <h3 className="text-5xl">{score}</h3>
         </div>
-        <div className={`${rightAnswersVisibility} border border-blue-400 p-3`}>
-          {rightAnswers}
+        <div className={`${correctAnswersVisibility} border border-blue-400 p-3`}>
+          {correctAnswers}
         </div>
       </div>
     </div>

@@ -5,12 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { storeUserWork } from '../users/usersSlice';
+import { fetchAnswers } from '../answers/answersSlice';
 
 const optionLetters = ['A', 'B', 'C', 'D'];
 
-const QuestionsList = ({
-  questions, subjectId, userId, year,
-}) => {
+const QuestionsList = (props) => {
+  const {
+    questions, subjectId, userId, year, token,
+  } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const optionsInitialValues = () => {
@@ -43,6 +45,7 @@ const QuestionsList = ({
     dispatch(storeUserWork({
       userId, subjectId, year, work,
     }));
+    dispatch(fetchAnswers({ token, subjectId, year }));
     navigate(`/subjects/${subjectId}/${year}/questions/results`);
   };
 
@@ -112,6 +115,7 @@ QuestionsList.propTypes = {
   subjectId: PropTypes.string.isRequired,
   userId: PropTypes.number.isRequired,
   year: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 export default QuestionsList;

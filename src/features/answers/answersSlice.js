@@ -3,8 +3,8 @@ import axios from 'axios';
 
 const baseUrl = 'https://passco-app-backend.herokuapp.com/api';
 
-export const fetchAnswers = createAsyncThunk('answers/fetchAnswers', async ({ token, subjectId, questionId }) => {
-  const res = await axios.get(`${baseUrl}/v1/answers?subject_id=${subjectId}?question_id=${questionId}`,
+export const fetchAnswers = createAsyncThunk('answers/fetchAnswers', async ({ token, subjectId, year }) => {
+  const res = await axios.get(`${baseUrl}/v1/answers?subject_id=${subjectId}&year=${year}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -13,8 +13,8 @@ export const fetchAnswers = createAsyncThunk('answers/fetchAnswers', async ({ to
   return res.data;
 });
 
-export const addAnswer = createAsyncThunk('answers/addAnswer', async ({ token, answers, ids }) => {
-  const res = await axios.post(`${baseUrl}/v1/answers?subject_id=${ids.subjectId}&question_id=${ids.questionId}`, { answers },
+export const addAnswer = createAsyncThunk('answers/addAnswer', async ({ token, answers, queryParams }) => {
+  const res = await axios.post(`${baseUrl}/v1/answers?subject_id=${queryParams.subjectId}&year=${queryParams.year}`, { answers },
     {
       headers: {
         Authorization: `Bearer ${token}`,

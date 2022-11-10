@@ -27,6 +27,7 @@ const QuestionsPage = ({ auth }) => {
           subjectId={subjectId}
           userId={id}
           year={year}
+          token={auth.entities[id].token}
         />,
       );
     }

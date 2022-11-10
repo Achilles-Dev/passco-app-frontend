@@ -5,13 +5,13 @@ import { selectAllQuestions } from '../features/questions/questionsSlice';
 
 const optionLetters = ['A', 'B', 'C', 'D'];
 
-const ResultComparison = ({ answers, user }) => {
+const ResultComparison = (props) => {
+  const { user, answers } = props;
   const questions = useSelector(selectAllQuestions);
   const answerMap = new Map();
 
   answers.forEach((answer) => {
-    // question_id for anser was used here, could be changed later
-    answerMap.set(answer.question_id, answer);
+    answerMap.set(answer.answer_no, answer);
   });
 
   return (
@@ -22,7 +22,7 @@ const ResultComparison = ({ answers, user }) => {
             {`${index + 1}. `}
             {question.content}
             {
-              user.userWork.work[0][`option${question.question_no}`] === answerMap.get(question.id).value
+              user.userWork.work[0][`option${question.question_no}`] === answerMap.get(question.question_no).value
                 ? <span className="ml-3 text-green-500">Correct</span> : <span className="ml-3 text-red-500">Wrong</span>
             }
           </h3>
@@ -33,9 +33,9 @@ const ResultComparison = ({ answers, user }) => {
                   ? (
                     <div
                       key={option}
-                      className={`flex gap-3 my-2 ${answerMap.get(question.id).value === optionLetters[i] ? 'border border-green-500 rounded' : ''}
+                      className={`flex gap-3 my-2 ${answerMap.get(question.question_no).value === optionLetters[i] ? 'border border-green-500 rounded' : ''}
                       ${user.userWork.work[0][`option${question.question_no}`] === optionLetters[i]
-                          && answerMap.get(question.id).value !== optionLetters[i] ? 'border  border-red-500 rounded' : ''}
+                          && answerMap.get(question.question_no).value !== optionLetters[i] ? 'border  border-red-500 rounded' : ''}
                       `}
                     >
                       {`${optionLetters[i]}.`}
@@ -58,7 +58,7 @@ ResultComparison.propTypes = {
     PropTypes.shape({
       id: PropTypes.number,
       subject_id: PropTypes.number,
-      question_id: PropTypes.number,
+      answer_no: PropTypes.number,
       value: PropTypes.string,
     }),
   ).isRequired,
