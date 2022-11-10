@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import userIcon from '../assets/images/user_icon.svg';
 import { signOut } from '../features/auth/authSlice';
-import { fetchSubjects, resetSubjects } from '../features/subjects/subjectsSlice';
+import { resetSubjects } from '../features/subjects/subjectsSlice';
 import { resetQuestions } from '../features/questions/questionsSlice';
 import { resetUsers } from '../features/users/usersSlice';
 import { resetAnswers } from '../features/answers/answersSlice';
@@ -22,13 +22,6 @@ const Header = ({ auth, subjects }) => {
       setVisibility('hidden');
     }
   };
-
-  useEffect(() => {
-    if (auth.entities[id]) {
-      const { token } = auth.entities[id];
-      dispatch(fetchSubjects(token));
-    }
-  }, [dispatch, auth]);
 
   const handleSubjectFocus = () => {
     if (subjectVisibility === 'hidden') {

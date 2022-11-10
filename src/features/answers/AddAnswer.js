@@ -29,12 +29,14 @@ const AddAnswer = ({ auth }) => {
   const handleSubmit = (values) => {
     const answers = {
       value: values.value,
+      year: question.year,
     };
+
     if (auth.entities[id]) {
       const { token } = auth.entities[id];
       const ids = {
         questionId,
-        subjectId: question.subjectId,
+        subjectId: question.subject_id,
       };
       dispatch(addAnswer({ token, answers, ids }));
     }
@@ -67,6 +69,9 @@ const AddAnswer = ({ auth }) => {
                     placeholder="Enter answer"
                   />
                   <ErrorMessage name="value" render={renderError} />
+                </div>
+                <div className="flex justify-center">
+                  <button type="submit" className="border px-10 py-3 border-green text-green hover:bg-slate-700">Save Answer</button>
                 </div>
               </Form>
             </Formik>

@@ -13,10 +13,6 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async (token) => 
   return res.data;
 });
 
-export const addSignedInUser = createAsyncThunk('users/addSignedInUser', async (user) => (
-  user
-));
-
 export const updateUser = createAsyncThunk('users/updateUser', async ({ token, user, userId }) => {
   const res = await axios.patch(`${baseUrl}/v1/users/${user.id}`, { user },
     {
@@ -68,17 +64,6 @@ export const addUserData = createAsyncThunk('users/addUserData', async ({
   return res.data;
 });
 
-export const storeUserWork = createAsyncThunk('users/storeUserWork', ({
-  userId, subjectId, year, work,
-}) => (
-  {
-    userId,
-    subjectId,
-    year,
-    work,
-  }
-));
-
 export const deleteUserData = createAsyncThunk('users/deleteUserData', async ({ token, userDataId }) => {
   const res = await axios
     .delete(`${baseUrl}/v1/user_data/${userDataId}`,
@@ -114,6 +99,19 @@ const usersSlice = createSlice({
     resetUsers: (state) => {
       state.status = 'idle';
       usersAdapter.removeAll(state);
+    },
+    addSignedInUser: (state, action) => {
+      state.status = 'succeeded';
+      usersAdapter.addOne(state, action.payload);
+    },
+    storeUserWork: (state, action) => {
+      state.status = 'succeeded';
+      const singleUser = state.entities[action.payload.userId];
+      if (singleUser) {
+        state.entities[action.payload.userId] = {
+          ...state.entities[action.payload.userId], userWork: action.payload,
+        };
+      }
     },
   },
   extraReducers: (builder) => {
@@ -167,21 +165,6 @@ const usersSlice = createSlice({
       .addCase(addUserData.rejected, (state) => {
         state.status = 'failed';
       })
-      .addCase(storeUserWork.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(storeUserWork.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        const singleUser = state.entities[action.payload.userId];
-        if (singleUser) {
-          state.entities[action.payload.userId] = {
-            ...state.entities[action.payload.userId], userWork: action.payload,
-          };
-        }
-      })
-      .addCase(storeUserWork.rejected, (state) => {
-        state.status = 'failed';
-      })
       .addCase(deleteUserData.pending, (state) => {
         state.status = 'loading';
       })
@@ -215,6 +198,8 @@ export default usersSlice.reducer;
 
 export const {
   resetUsers,
+  addSignedInUser,
+  storeUserWork,
 } = usersSlice.actions;
 
 export const {
