@@ -79,14 +79,17 @@ const AddQuestion = ({ auth }) => {
   const handleSubmit = (values) => {
     const optionValues = [values.option1, values.option2, values.option3, values.option4];
     const questions = {
-      year,
       question_no: values.question_no,
       content: values.content,
       options: optionValues.filter((value) => value !== null),
     };
+    const queryParams = {
+      subjectId,
+      year,
+    };
     if (auth.entities[id] && (subjectId > 0) && (year !== '')) {
       const { token } = auth.entities[id];
-      dispatch(addQuestion({ token, questions, subjectId }));
+      dispatch(addQuestion({ token, questions, queryParams }));
     } else if (year !== '' && (subjectId === 0 && typeof subjectId !== 'number')) {
       setSubjectIdMessage('Please choose a subject');
     } else if (year === '') {

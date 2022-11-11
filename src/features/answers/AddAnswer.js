@@ -19,10 +19,12 @@ const AddAnswer = ({ auth }) => {
   const dispatch = useDispatch();
 
   const initialValues = {
+    answer_no: '',
     value: '',
   };
 
   const validationSchema = Yup.object({
+    answer_no: Yup.number().required('Please enter number for answer'),
     value: Yup.string().required('Please enter answer for question'),
   });
 
@@ -62,13 +64,24 @@ const AddAnswer = ({ auth }) => {
             >
               <Form>
                 <div className="my-2">
-                  <Field
-                    className="input-field focus:shadow-outline"
-                    name="value"
-                    type="input"
-                    placeholder="Enter answer"
-                  />
-                  <ErrorMessage name="value" render={renderError} />
+                  <div className="m-2">
+                    <Field
+                      className="input-field focus:shadow-outline"
+                      name="answer_no"
+                      type="number"
+                      placeholder="Enter number"
+                    />
+                    <ErrorMessage name="answer_no" render={renderError} />
+                  </div>
+                  <div className="m-2">
+                    <Field
+                      className="input-field focus:shadow-outline"
+                      name="value"
+                      type="text"
+                      placeholder="Enter answer value"
+                    />
+                    <ErrorMessage name="value" render={renderError} />
+                  </div>
                 </div>
                 <div className="flex justify-center">
                   <button type="submit" className="border px-10 py-3 border-green text-green hover:bg-slate-700">Save Answer</button>

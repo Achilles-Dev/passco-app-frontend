@@ -100,6 +100,7 @@ const answersSlice = createSlice({
         const singleAnswer = state.entities[id];
         if (singleAnswer) {
           singleAnswer.value = answers.value;
+          singleAnswer.answer_no = answers.answer_no;
         }
       })
       .addCase(updateAnswer.rejected, (state) => {
