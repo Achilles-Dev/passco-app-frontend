@@ -3,8 +3,8 @@ import axios from 'axios';
 
 const baseUrl = 'https://passco-app-backend.herokuapp.com/api';
 
-export const addQuestion = createAsyncThunk('questions/addQuestion', async ({ token, questions, subjectId }) => {
-  const res = await axios.post(`${baseUrl}/v1/questions?subject_id=${subjectId}`, { questions },
+export const addQuestion = createAsyncThunk('questions/addQuestion', async ({ token, questions, queryParams }) => {
+  const res = await axios.post(`${baseUrl}/v1/questions?subject_id=${queryParams.subjectId}&year=${queryParams.year}`, { questions },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -50,7 +50,9 @@ export const deleteQuestion = createAsyncThunk('questions/deleteQuestion', async
   };
 });
 
-const questionsAdapter = createEntityAdapter();
+const questionsAdapter = createEntityAdapter({
+  selectId: (question) => question.question_no,
+});
 
 const initialState = questionsAdapter.getInitialState({
   status: 'idle',
@@ -97,7 +99,6 @@ const questionsSlice = createSlice({
         const { questions, id } = action.payload;
         const singleQuestion = state.entities[id];
         if (singleQuestion) {
-          singleQuestion.year = questions.year;
           singleQuestion.question_no = questions.question_no;
           singleQuestion.content = questions.content;
           singleQuestion.options = questions.options;

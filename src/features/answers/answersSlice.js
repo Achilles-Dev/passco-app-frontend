@@ -50,7 +50,9 @@ export const deleteAnswer = createAsyncThunk('answers/deleteAnswer', async ({ to
   };
 });
 
-const answersAdapter = createEntityAdapter();
+const answersAdapter = createEntityAdapter({
+  selectId: (answer) => answer.answer_no,
+});
 
 const initialState = answersAdapter.getInitialState({
   status: 'idle',
