@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { selectUserById } from '../features/users/usersSlice';
-import ResultComparison from './ResultsComparison';
+import ResultComparison from '../components/ResultsComparison';
 import { selectAllAnswers } from '../features/answers/answersSlice';
 
 const ResultsPage = ({ auth }) => {
