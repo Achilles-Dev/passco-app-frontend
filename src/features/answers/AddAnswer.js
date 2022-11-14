@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { selectQuestionById } from '../questions/questionsSlice';
 import { addAnswer } from './answersSlice';
-import FormilForm from '../../components/FormikForm';
+import FormikForm from '../../components/FormikForm';
 
 const fields = [
   {
@@ -67,7 +67,7 @@ const AddAnswer = ({ auth }) => {
                 resetForm();
               }}
             >
-              <FormilForm
+              <FormikForm
                 options={fields}
               />
             </Formik>

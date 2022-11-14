@@ -3,7 +3,7 @@ import { ErrorMessage, Field, Form } from 'formik';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 
-const FormilForm = (props) => {
+const FormikForm = (props) => {
   const {
     options, removeOption, closeIcon, optionLength, addOption,
   } = props;
@@ -70,7 +70,14 @@ const FormilForm = (props) => {
   );
 };
 
-FormilForm.propTypes = {
+FormikForm.defaultProps = {
+  closeIcon: 'undefined',
+  removeOption: PropTypes.func,
+  optionLength: 0,
+  addOption: PropTypes.func,
+};
+
+FormikForm.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
@@ -78,10 +85,10 @@ FormilForm.propTypes = {
       placeholder: PropTypes.string,
     }),
   ).isRequired,
-  closeIcon: PropTypes.string.isRequired,
-  removeOption: PropTypes.func.isRequired,
-  optionLength: PropTypes.number.isRequired,
-  addOption: PropTypes.func.isRequired,
+  closeIcon: PropTypes.string,
+  removeOption: PropTypes.func,
+  optionLength: PropTypes.number,
+  addOption: PropTypes.func,
 };
 
-export default FormilForm;
+export default FormikForm;

@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { addQuestion } from './questionsSlice';
 import closeIcon from '../../assets/images/icon-close.svg';
 import { selectAllSubjects } from '../subjects/subjectsSlice';
-import FormilForm from '../../components/FormikForm';
+import FormikForm from '../../components/FormikForm';
 
 const fields = [
   {
@@ -151,7 +151,7 @@ const AddQuestion = ({ auth }) => {
                   : '';
               }}
             >
-              <FormilForm
+              <FormikForm
                 options={options}
                 closeIcon={closeIcon}
                 removeOption={removeOption}
