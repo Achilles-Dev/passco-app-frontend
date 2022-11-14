@@ -64,7 +64,7 @@ const FormikForm = (props) => {
         ) : ''}
       <span className="text-red-600">{message}</span>
       <div id="save-button" className="flex justify-center">
-        <button type="submit" className="border px-10 py-3 border-green text-green hover:bg-slate-700">Save Question</button>
+        <button type="submit" className="btn-primary disabled:btn-primary-light px-10 py-3">Save Question</button>
       </div>
     </Form>
   );

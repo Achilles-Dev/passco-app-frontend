@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import {
-  ErrorMessage,
-  Field,
   Formik,
-  Form,
 } from 'formik';
 import * as Yup from 'yup';
 import { addSubject } from './subjectsSlice';
+import FormikForm from '../../components/FormikForm';
 
 const fields = [
   {
@@ -22,15 +20,10 @@ const fields = [
 const AddSubject = ({ auth }) => {
   const id = auth.ids[0];
   const dispatch = useDispatch();
-  const [message, setMessage] = useState('');
 
   const initialValues = {
     name: '',
     code: '',
-  };
-
-  const handleFocus = () => {
-    setMessage('');
   };
 
   const validationSchema = Yup.object({
@@ -48,8 +41,6 @@ const AddSubject = ({ auth }) => {
     }
   };
 
-  const renderError = (message) => <span className="text-red-600">{message}</span>;
-
   return (
     <div className="flex flex-col py-5 h-screen bg-gray-200 md:px-40">
       <div className="h-3/4 lg:px-20">
@@ -66,26 +57,7 @@ const AddSubject = ({ auth }) => {
                 resetForm();
               }}
             >
-              <Form className="input-form">
-                {
-                  fields.map((field) => (
-                    <div key={field.index} className="my-2">
-                      <Field
-                        className="input-field focus:shadow-outline"
-                        name={field.name}
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        onFocus={handleFocus}
-                      />
-                      <ErrorMessage name={field.name} render={renderError} />
-                    </div>
-                  ))
-                }
-                <span className="text-red-600">{message}</span>
-                <div className="flex justify-center">
-                  <button type="submit" className="btn-primary disabled:btn-primary-light">Save Subject</button>
-                </div>
-              </Form>
+              <FormikForm options={fields} />
             </Formik>
           </div>
         </div>
