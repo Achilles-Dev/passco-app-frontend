@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
-  Formik, Form, Field, ErrorMessage,
+  Formik,
 } from 'formik';
 import * as Yup from 'yup';
 import { signIn } from './authSlice';
+import FormikForm from '../../components/FormikForm';
 
 const fields = [
   {
@@ -42,12 +43,6 @@ const SigninPage = () => {
     dispatch(signIn(user));
   };
 
-  const handleFocus = () => {
-    setMessage('');
-  };
-
-  const renderError = (message) => <span className="text-red-600">{message}</span>;
-
   const validationSchema = Yup.object({
     email: Yup.string().email('Email is invalid').required('Please enter  your email address'),
     password: Yup.string().min(6, 'Password must be least 6 characters long').required('Please enter your password'),
@@ -74,26 +69,7 @@ const SigninPage = () => {
                 resetForm();
               }}
             >
-              <Form className="input-form">
-                {
-                  fields.map((field) => (
-                    <div key={field.index} className="my-2">
-                      <Field
-                        className="input-field focus:shadow-outline"
-                        name={field.name}
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        onFocus={handleFocus}
-                      />
-                      <ErrorMessage name={field.name} render={renderError} />
-                    </div>
-                  ))
-                }
-                <span className="text-red-600">{message}</span>
-                <div className="flex justify-center">
-                  <button id="signin-button" type="submit" className="btn-primary disabled:btn-primary-light">Signin</button>
-                </div>
-              </Form>
+              <FormikForm options={fields} message={message} buttonName="Signin" />
             </Formik>
           </div>
         </div>

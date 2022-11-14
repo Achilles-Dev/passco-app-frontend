@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
-  Formik, Form, Field, ErrorMessage,
+  Formik,
 } from 'formik';
 import * as Yup from 'yup';
 import { signUp } from './authSlice';
+import FormikForm from '../../components/FormikForm';
 
 const fields = [
   {
@@ -40,12 +41,6 @@ const SignupPage = () => {
       }
     });
   }, [auth]);
-
-  const handleFocus = () => {
-    setMessage('');
-  };
-
-  const renderError = (message) => <span className="text-red-600">{message}</span>;
 
   const handleSubmit = (values) => {
     const user = {
@@ -87,26 +82,7 @@ const SignupPage = () => {
                 resetForm();
               }}
             >
-              <Form className="input-form">
-                {
-                  fields.map((field) => (
-                    <div key={field.index} className="my-2">
-                      <Field
-                        className="input-field focus:shadow-outline"
-                        name={field.name}
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        onFocus={handleFocus}
-                      />
-                      <ErrorMessage name={field.name} render={renderError} />
-                    </div>
-                  ))
-                }
-                <span className="text-red-600">{message}</span>
-                <div className="flex justify-center">
-                  <button id="signin-button" type="submit" className="btn-primary disabled:btn-primary-light">Signup</button>
-                </div>
-              </Form>
+              <FormikForm options={fields} buttonName="Signup" message={message} />
             </Formik>
           </div>
         </div>
