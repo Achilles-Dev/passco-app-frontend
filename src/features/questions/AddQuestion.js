@@ -34,6 +34,11 @@ const AddQuestion = ({ auth }) => {
   const currentYear = new Date().getFullYear();
   const yearLength = currentYear - 1989;
   const yearRange = Array.from({ length: yearLength }, (_, i) => i + 1990);
+  const [message, setMessage] = useState('');
+
+  const handleFocus = () => {
+    setMessage('');
+  };
 
   const initialValues = {
     question_no: '',
@@ -157,6 +162,9 @@ const AddQuestion = ({ auth }) => {
                 removeOption={removeOption}
                 addOption={addOption}
                 optionLength={optionLength}
+                message={message}
+                buttonName="Add Question"
+                handleFocus={handleFocus}
               />
             </Formik>
           </div>

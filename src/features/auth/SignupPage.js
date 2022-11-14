@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -29,19 +29,6 @@ const SignupPage = () => {
   const auth = useSelector((state) => state.auth);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    document.querySelector('#signin-button').addEventListener('click', () => {
-      if (auth.status === 'loading') {
-        document.querySelector('#signin-button').disabled = true;
-      } else if (auth.status === 'failed') {
-        setMessage('Could not create account with user details');
-        document.querySelector('#signin-button').disabled = false;
-      } else if (auth.status === 'succeeded') {
-        navigate('/');
-      }
-    });
-  }, [auth]);
-
   const handleSubmit = (values) => {
     const user = {
       user: {
@@ -49,6 +36,18 @@ const SignupPage = () => {
       },
     };
     dispatch(signUp(user));
+    if (auth.status === 'loading') {
+      document.querySelector('#signin-button').disabled = true;
+    } else if (auth.status === 'failed') {
+      setMessage('Could not create account with user details');
+      document.querySelector('#signin-button').disabled = false;
+    } else if (auth.status === 'succeeded') {
+      navigate('/');
+    }
+  };
+
+  const handleFocus = () => {
+    setMessage('');
   };
 
   const validationSchema = Yup.object({
@@ -82,7 +81,12 @@ const SignupPage = () => {
                 resetForm();
               }}
             >
-              <FormikForm options={fields} buttonName="Signup" message={message} />
+              <FormikForm
+                options={fields}
+                buttonName="Signup"
+                message={message}
+                handleFocus={handleFocus}
+              />
             </Formik>
           </div>
         </div>

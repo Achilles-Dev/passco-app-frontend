@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Formik,
 } from 'formik';
@@ -24,6 +24,11 @@ const AddAnswer = ({ auth }) => {
   const { questionId } = useParams();
   const question = useSelector((state) => selectQuestionById(state, questionId));
   const dispatch = useDispatch();
+  const [message, setMessage] = useState('');
+
+  const handleFocus = () => {
+    setMessage('');
+  };
 
   const initialValues = {
     answer_no: '',
@@ -69,6 +74,9 @@ const AddAnswer = ({ auth }) => {
             >
               <FormikForm
                 options={fields}
+                message={message}
+                buttonName="Add Answer"
+                handleFocus={handleFocus}
               />
             </Formik>
           </div>

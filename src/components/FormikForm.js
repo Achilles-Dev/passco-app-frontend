@@ -1,18 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ErrorMessage, Field, Form } from 'formik';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 
 const FormikForm = (props) => {
   const {
-    options, removeOption, closeIcon, optionLength, addOption,
+    options, removeOption, closeIcon, optionLength, addOption, handleFocus, buttonName, message,
   } = props;
-  const [message, setMessage] = useState('');
   const { pathname } = useLocation();
-
-  const handleFocus = () => {
-    setMessage('');
-  };
 
   const renderError = (message) => <span className="text-red-600">{message}</span>;
 
@@ -64,7 +59,7 @@ const FormikForm = (props) => {
         ) : ''}
       <span className="text-red-600">{message}</span>
       <div id="save-button" className="flex justify-center">
-        <button type="submit" className="btn-primary disabled:btn-primary-light px-10 py-3">Save Question</button>
+        <button type="submit" className="btn-primary disabled:btn-primary-light px-10 py-3">{buttonName}</button>
       </div>
     </Form>
   );
@@ -75,6 +70,9 @@ FormikForm.defaultProps = {
   removeOption: PropTypes.func,
   optionLength: 0,
   addOption: PropTypes.func,
+  message: '',
+  handleFocus: PropTypes.func,
+  buttonName: '',
 };
 
 FormikForm.propTypes = {
@@ -89,6 +87,9 @@ FormikForm.propTypes = {
   removeOption: PropTypes.func,
   optionLength: PropTypes.number,
   addOption: PropTypes.func,
+  message: PropTypes.string,
+  handleFocus: PropTypes.func,
+  buttonName: PropTypes.string,
 };
 
 export default FormikForm;

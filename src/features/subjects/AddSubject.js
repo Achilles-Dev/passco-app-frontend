@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import {
@@ -20,10 +20,15 @@ const fields = [
 const AddSubject = ({ auth }) => {
   const id = auth.ids[0];
   const dispatch = useDispatch();
+  const [message, setMessage] = useState('');
 
   const initialValues = {
     name: '',
     code: '',
+  };
+
+  const handleFocus = () => {
+    setMessage('');
   };
 
   const validationSchema = Yup.object({
@@ -57,7 +62,12 @@ const AddSubject = ({ auth }) => {
                 resetForm();
               }}
             >
-              <FormikForm options={fields} />
+              <FormikForm
+                options={fields}
+                buttonName="Add Subject"
+                message={message}
+                handleFocus={handleFocus}
+              />
             </Formik>
           </div>
         </div>
