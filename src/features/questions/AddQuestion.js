@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  ErrorMessage,
-  Field,
   Formik,
-  Form,
 } from 'formik';
 import * as Yup from 'yup';
 import { addQuestion } from './questionsSlice';
 import closeIcon from '../../assets/images/icon-close.svg';
 import { selectAllSubjects } from '../subjects/subjectsSlice';
+import FormilForm from '../../components/FormikForm';
 
 const fields = [
   {
@@ -27,7 +25,6 @@ const fields = [
 const AddQuestion = ({ auth }) => {
   const id = auth.ids[0];
   const dispatch = useDispatch();
-  const [message, setMessage] = useState('');
   const [options, setOptions] = useState([...fields]);
   const subjects = useSelector(selectAllSubjects);
   const [subjectId, setSubjectId] = useState(0);
@@ -45,10 +42,6 @@ const AddQuestion = ({ auth }) => {
     option2: '',
     option3: '',
     option4: '',
-  };
-
-  const handleFocus = () => {
-    setMessage('');
   };
 
   const handleYearSelect = () => {
@@ -97,8 +90,6 @@ const AddQuestion = ({ auth }) => {
     }
   };
 
-  const renderError = (message) => <span className="text-red-600">{message}</span>;
-
   const addOption = () => {
     const newField = {
       index: options.length + 1, name: `option${options.length - 1}`, elementName: 'input', type: 'text', placeholder: 'Add option',
@@ -129,7 +120,7 @@ const AddQuestion = ({ auth }) => {
               className="block py-2.5 px-0 w-auto text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200"
               onChange={handleYearSelect}
             >
-              <option selected>Choose year</option>
+              <option>Choose year</option>
               { yearRange.map((year) => (
                 <option key={year}>{year}</option>
               ))}
@@ -142,7 +133,7 @@ const AddQuestion = ({ auth }) => {
               className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
               onChange={handleSubjectSelect}
             >
-              <option className="h-full" selected>Choose subject</option>
+              <option className="h-full">Choose subject</option>
               { subjects.map((subject) => (
                 <option key={subject.id} value={subject.id}>{subject.name}</option>
               ))}
@@ -160,53 +151,13 @@ const AddQuestion = ({ auth }) => {
                   : '';
               }}
             >
-              <Form className="input-form">
-                {
-                  options.map((field) => (
-                    field.name.includes('option')
-                      ? (
-                        <div key={field.index} className="my-2">
-                          <div className="flex gap-2">
-                            <Field
-                              className="input-field focus:shadow-outline "
-                              name={field.name}
-                              type={field.type}
-                              placeholder={field.placeholder}
-                              onFocus={handleFocus}
-                            />
-                            <button
-                              type="button"
-                              className={`flex justify-center items-center border border-red-500 rounded-full px-1 mb-3 ${optionLength === 1 ? 'hidden' : ''}`}
-                              onClick={() => removeOption(field.index)}
-                            >
-                              <img id="closeIcon" src={closeIcon} alt="Close" />
-                            </button>
-                          </div>
-                          <ErrorMessage name={field.name} render={renderError} />
-                        </div>
-                      )
-                      : (
-                        <div key={field.index} className="my-2">
-                          <Field
-                            className="input-field focus:shadow-outline"
-                            name={field.name}
-                            type={field.type}
-                            placeholder={field.placeholder}
-                            onFocus={handleFocus}
-                          />
-                          <ErrorMessage name={field.name} render={renderError} />
-                        </div>
-                      )
-                  ))
-                }
-                <div className={`flex justify-start mb-3 ${optionLength === 4 ? 'hidden' : ''}`}>
-                  <button type="button" className="btn-primary" onClick={addOption}>Add option</button>
-                </div>
-                <span className="text-red-600">{message}</span>
-                <div id="save-button" className="flex justify-center">
-                  <button type="submit" className="border px-10 py-3 border-green text-green hover:bg-slate-700">Save Question</button>
-                </div>
-              </Form>
+              <FormilForm
+                options={options}
+                closeIcon={closeIcon}
+                removeOption={removeOption}
+                addOption={addOption}
+                optionLength={optionLength}
+              />
             </Formik>
           </div>
         </div>

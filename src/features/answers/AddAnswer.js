@@ -1,8 +1,5 @@
 import React from 'react';
 import {
-  ErrorMessage,
-  Field,
-  Form,
   Formik,
 } from 'formik';
 import PropTypes from 'prop-types';
@@ -11,6 +8,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { selectQuestionById } from '../questions/questionsSlice';
 import { addAnswer } from './answersSlice';
+import FormilForm from '../../components/FormikForm';
+
+const fields = [
+  {
+    index: 1, name: 'answer_no', elementName: 'input', type: 'number', placeholder: 'Enter number',
+  },
+  {
+    index: 2, name: 'value', elementName: 'input', type: 'text', placeholder: 'Enter answer value',
+  },
+];
 
 const AddAnswer = ({ auth }) => {
   const id = auth.ids[0];
@@ -44,8 +51,6 @@ const AddAnswer = ({ auth }) => {
     }
   };
 
-  const renderError = (message) => <span className="text-red-600">{message}</span>;
-
   return (
     <div className="flex flex-col py-5 h-screen bg-gray-200 md:px-40">
       <div className="h-3/4 lg:px-20">
@@ -62,31 +67,9 @@ const AddAnswer = ({ auth }) => {
                 resetForm();
               }}
             >
-              <Form>
-                <div className="my-2">
-                  <div className="m-2">
-                    <Field
-                      className="input-field focus:shadow-outline"
-                      name="answer_no"
-                      type="number"
-                      placeholder="Enter number"
-                    />
-                    <ErrorMessage name="answer_no" render={renderError} />
-                  </div>
-                  <div className="m-2">
-                    <Field
-                      className="input-field focus:shadow-outline"
-                      name="value"
-                      type="text"
-                      placeholder="Enter answer value"
-                    />
-                    <ErrorMessage name="value" render={renderError} />
-                  </div>
-                </div>
-                <div className="flex justify-center">
-                  <button type="submit" className="border px-10 py-3 border-green text-green hover:bg-slate-700">Save Answer</button>
-                </div>
-              </Form>
+              <FormilForm
+                options={fields}
+              />
             </Formik>
           </div>
         </div>
