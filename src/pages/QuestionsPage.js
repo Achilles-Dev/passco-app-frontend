@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { selectSubjectById } from '../features/subjects/subjectsSlice';
 import { fetchQuestions, resetQuestions, selectAllQuestions } from '../features/questions/questionsSlice';
-import Spinner from './Spinner';
+import Spinner from '../components/Spinner';
 import QuestionsList from '../features/questions/QuestionsList';
 import { addSignedInUser } from '../features/users/usersSlice';
 

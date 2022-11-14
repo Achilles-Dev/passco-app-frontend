@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
-  Formik, Form, Field, ErrorMessage,
+  Formik,
 } from 'formik';
 import * as Yup from 'yup';
 import { signUp } from './authSlice';
+import FormikForm from '../../components/FormikForm';
 
 const fields = [
   {
@@ -28,25 +29,6 @@ const SignupPage = () => {
   const auth = useSelector((state) => state.auth);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    document.querySelector('#signin-button').addEventListener('click', () => {
-      if (auth.status === 'loading') {
-        document.querySelector('#signin-button').disabled = true;
-      } else if (auth.status === 'failed') {
-        setMessage('Could not create account with user details');
-        document.querySelector('#signin-button').disabled = false;
-      } else if (auth.status === 'succeeded') {
-        navigate('/');
-      }
-    });
-  }, [auth]);
-
-  const handleFocus = () => {
-    setMessage('');
-  };
-
-  const renderError = (message) => <span className="text-red-600">{message}</span>;
-
   const handleSubmit = (values) => {
     const user = {
       user: {
@@ -54,6 +36,18 @@ const SignupPage = () => {
       },
     };
     dispatch(signUp(user));
+    if (auth.status === 'loading') {
+      document.querySelector('#signin-button').disabled = true;
+    } else if (auth.status === 'failed') {
+      setMessage('Could not create account with user details');
+      document.querySelector('#signin-button').disabled = false;
+    } else if (auth.status === 'succeeded') {
+      navigate('/');
+    }
+  };
+
+  const handleFocus = () => {
+    setMessage('');
   };
 
   const validationSchema = Yup.object({
@@ -87,26 +81,12 @@ const SignupPage = () => {
                 resetForm();
               }}
             >
-              <Form className="input-form">
-                {
-                  fields.map((field) => (
-                    <div key={field.index} className="my-2">
-                      <Field
-                        className="input-field focus:shadow-outline"
-                        name={field.name}
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        onFocus={handleFocus}
-                      />
-                      <ErrorMessage name={field.name} render={renderError} />
-                    </div>
-                  ))
-                }
-                <span className="text-red-600">{message}</span>
-                <div className="flex justify-center">
-                  <button id="signin-button" type="submit" className="btn-primary disabled:btn-primary-light">Signup</button>
-                </div>
-              </Form>
+              <FormikForm
+                options={fields}
+                buttonName="Signup"
+                message={message}
+                handleFocus={handleFocus}
+              />
             </Formik>
           </div>
         </div>

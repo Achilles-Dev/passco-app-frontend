@@ -1,18 +1,18 @@
 import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
-import Homepage from './components/Homepage';
-import SubjectSelectPage from './components/SubjectSelectPage';
 import AddAnswer from './features/answers/AddAnswer';
 import SigninPage from './features/auth/SigninPage';
 import SignupPage from './features/auth/SignupPage';
 import AddQuestion from './features/questions/AddQuestion';
 import EditQuestion from './features/questions/EditQuestion';
-import QuestionsPage from './components/QuestionsPage';
 import AddSubject from './features/subjects/AddSubject';
 import EditSubject from './features/subjects/EditSubject';
 import { selectAllSubjects } from './features/subjects/subjectsSlice';
-import ResultsPage from './components/ResultsPage';
+import Homepage from './pages/Homepage';
+import SubjectSelectPage from './pages/SubjectSelectPage';
+import ResultsPage from './pages/ResultsPage';
+import QuestionsPage from './pages/QuestionsPage';
 
 function App() {
   const auth = useSelector((state) => state.auth);

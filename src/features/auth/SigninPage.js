@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
-  Formik, Form, Field, ErrorMessage,
+  Formik,
 } from 'formik';
 import * as Yup from 'yup';
 import { signIn } from './authSlice';
+import FormikForm from '../../components/FormikForm';
 
 const fields = [
   {
@@ -22,7 +23,13 @@ const SigninPage = () => {
   const auth = useSelector((state) => state.auth);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
+  const handleSubmit = (values) => {
+    const user = {
+      user: {
+        ...values,
+      },
+    };
+    dispatch(signIn(user));
     if (auth.status === 'loading') {
       document.querySelector('#signin-button').disabled = true;
     } else if (auth.status === 'failed') {
@@ -31,22 +38,11 @@ const SigninPage = () => {
     } else if (auth.status === 'succeeded') {
       navigate('/');
     }
-  }, [auth]);
-
-  const handleSubmit = (values) => {
-    const user = {
-      user: {
-        ...values,
-      },
-    };
-    dispatch(signIn(user));
   };
 
   const handleFocus = () => {
     setMessage('');
   };
-
-  const renderError = (message) => <span className="text-red-600">{message}</span>;
 
   const validationSchema = Yup.object({
     email: Yup.string().email('Email is invalid').required('Please enter  your email address'),
@@ -74,26 +70,12 @@ const SigninPage = () => {
                 resetForm();
               }}
             >
-              <Form className="input-form">
-                {
-                  fields.map((field) => (
-                    <div key={field.index} className="my-2">
-                      <Field
-                        className="input-field focus:shadow-outline"
-                        name={field.name}
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        onFocus={handleFocus}
-                      />
-                      <ErrorMessage name={field.name} render={renderError} />
-                    </div>
-                  ))
-                }
-                <span className="text-red-600">{message}</span>
-                <div className="flex justify-center">
-                  <button id="signin-button" type="submit" className="btn-primary disabled:btn-primary-light">Signin</button>
-                </div>
-              </Form>
+              <FormikForm
+                options={fields}
+                message={message}
+                buttonName="Signin"
+                handleFocus={handleFocus}
+              />
             </Formik>
           </div>
         </div>
